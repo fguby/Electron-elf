@@ -1,22 +1,25 @@
 {
-  "name": "katou",
-  "version": "1.0.0",
+  "name": "Elf",
+  "version": "0.0.1",
   "description": "electron-live2d",
-  "main": "./app/main.js",
+  "main": "index.js",
   "scripts": {
-    "start": "electron"
+    "start": "electron ./app"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fguby/Elf",
+    "docs": "https://github.com/fguby/Elf/blob/master/README.md"
+  },
+  "license": "MIT",
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "Electron"
   ],
   "author": "wushaoqiang",
-  "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^4.1.4"
+  },
+  "dependencies": {
+    "menubar": "latest"
   }
 }
