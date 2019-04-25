@@ -52,4 +52,4 @@ npm install && npm start
 
 > 如果喜欢的话，不妨给个star，然后watching这个项目。
 
-
+一 [测试版mac安装包](https://github.com/fguby/Elf/releases/tag/v0.0.1/ "Elf")
