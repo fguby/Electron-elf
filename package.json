@@ -1,0 +1,22 @@
+{
+  "name": "katou",
+  "version": "1.0.0",
+  "description": "electron-live2d",
+  "main": "./app/main.js",
+  "scripts": {
+    "start": "electron"
+  },
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo"
+  ],
+  "author": "wushaoqiang",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^4.1.4"
+  }
+}
