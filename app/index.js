@@ -1,12 +1,16 @@
 // Modules to control application life and create native browser window
 const electron = require('electron')
-const {app, Menu,Tray, BrowserWindow,shell} = require('electron')
+const {session,app, Menu,Tray, BrowserWindow,shell,globalShortcut,Notification} = require('electron')
 const path = require('path');
+var Imap = require('imap');
+var MailParser = require("mailparser").MailParser;
+var fs = require("fs");
 var appTray;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+let notif;
 //菜单栏图标的位置
 var iconX = 0;
 var iconY = 0;
@@ -15,6 +19,21 @@ var iconY = 0;
 var windowId;
 //窗口对象
 var windowobj;
+//切换衣服模式
+var changeTexureWay = "sequence";
+var modelMenuId = 0;
+var modelMenuArr = ["/index.html","/view/pio.html","/view/sisters.html","/view/rem.html","/view/katou.html"];
+
+//邮件obj
+var emails = [];
+var emailObj = {
+      "from"    : "",
+      "type"    : "",
+      "text"    : "",
+      "html"    : "",
+      "filename" : "",
+      "subject" : ""
+};
 
 function createWindow () {
     const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize
@@ -23,6 +42,8 @@ function createWindow () {
       y:height - 500,
       width: 300,
       height: 500,
+      // width: 800,
+      // height: 1000,
       maximizable: false,
       minimizable: false,
       resizable: false,
@@ -33,11 +54,13 @@ function createWindow () {
       alwaysOnTop: true,
       titleBarStyle: 'customButtonsOnHover',
       webPreferences: {
-        nodeIntegration: false
+        nodeIntegration: true
       }
     }
       // Create the browser window.
-    mainWindow = new BrowserWindow(windowobj)
+    mainWindow = new BrowserWindow(windowobj);
+     // 打开开发者工具
+    //mainWindow.webContents.openDevTools()
     windowId = mainWindow.id;
     // and load the index.html of the app.
     mainWindow.loadFile(path.join(__dirname, '/index.html'))
@@ -49,48 +72,70 @@ function createWindow () {
       mainWindow = null
     })
 
+    //快捷键注册 模型切换
+    globalShortcut.register('CommandOrControl+Y', () => {
+       notif.show();
+       if(modelMenuId == 4) {
+         modelMenuId = 0;
+       }else{
+         modelMenuId += 1;
+       }
+       changeModel(modelMenuArr[modelMenuId]);
+    });
+    //快捷键注册 换装
+    globalShortcut.register('CommandOrControl+J', () => {
+      var window = BrowserWindow.fromId(windowId);
+      //发送换装消息
+      window.webContents.send('asynchronous-reply', changeTexureWay)
+   });
 
    //系统托盘右键菜单
    var trayMenuTemplate = [
-      {
+      { 
+          id:1,
           label: '更换模型',
           type: 'submenu',
-          icon: path.join(__dirname, '/img/Fairy44 - Face #2220.png'),
+          // icon: path.join(__dirname, '/img/Fairy44 - Face #2220.png'),
           submenu: [
               {
                 label:'干物妹小埋',
                 type:'radio',
                 checked:true,
-                click:function(menuItem, browserWindow, event) {
+                click:function() {
                   changeModel('/index.html');
+                  modelMenuId = 0;
                }
               },
               {
                 label:'药水制作师小萝莉',
                 type:'radio',
-                click:function(menuItem, browserWindow, event) {
+                click:function() {
                   changeModel('/view/pio.html');
+                  modelMenuId = 1;
                }
               },
               {
                 label:'二次元姐妹花',
                 type:'radio',
-                click:function(menuItem, browserWindow, event) {
+                click:function() {
                   changeModel('/view/sisters.html');
+                  modelMenuId = 2;
                }
               },
               {
                 label:'从零开始的异世界生活：蕾姆',
                 type:'radio',
-                click:function(menuItem, browserWindow, event) {
+                click:function() {
                   changeModel('/view/rem.html');
+                  modelMenuId = 3;
                }
               },
               {
                 label:'路人女主养成方法：加藤惠',
                 type:'radio',
-                click:function(menuItem, browserWindow, event) {
+                click:function() {
                   changeModel('/view/katou.html');
+                  modelMenuId = 4;
                }
               },
           ]
@@ -99,16 +144,23 @@ function createWindow () {
         type:'separator'
       },
       {
-          label: '🎧  音效',
-          type:'checkbox'
-      },
-      {
-          label: '💰  赞助',
+          id:2,
+          label: '💰赞助一下',
           click:function(menuItem, browserWindow, event){
               wechatpay(appTray.getBounds(),browserWindow)
           }
       },
-      {
+      { 
+        id:3,
+        label: '👗换装',
+        click:function(){
+          var window = BrowserWindow.fromId(windowId);
+          //发送换装消息
+          window.webContents.send('asynchronous-reply', changeTexureWay)
+        }
+      },
+      { 
+        id:4,
         label: 'website',
         click:function() {
            shell.openExternal('https://github.com/fguby');
@@ -116,6 +168,27 @@ function createWindow () {
       },
       {
         type:'separator'
+      },
+      { 
+        id:5,
+        label: '换装设置',
+        submenu:[
+            {
+              label:'顺序切换',
+              type:'radio',
+              checked:true,
+              click:function(){
+                changeTexureWay = "sequence";
+              }
+            },
+            {
+              label:'随机切换',
+              type:'radio',
+              click:function(){
+                changeTexureWay = "random";
+              }
+            },
+        ]
       },
       {
           label: '退出',
@@ -178,3 +251,141 @@ function changeModel(modelpath) {
     windowId = mainWindow.id;
     mainWindow.loadFile(path.join(__dirname, modelpath));
 }
+
+
+var imap = new Imap({
+    user: '541208156@qq.com', //你的邮箱账号
+    password: 'rdgxyopeaddvbcgb', //你的邮箱密码
+    host: 'pop.qq.com', //邮箱服务器的主机地址
+});
+
+function openInbox(cb) {
+  imap.openBox('INBOX', true, cb);
+}
+
+imap.on('ready', function() {
+
+  openInbox(function(err, box) {
+
+    // console.log("打开邮箱")
+
+    if (err) throw err;
+
+    imap.search(['UNSEEN', ['SINCE', 'May 20, 2017']], function(err, results) {//搜寻2017-05-20以后未读的邮件
+
+      if (err) throw err;
+
+      if(results.length == 0) {
+          imap.end();
+          return;
+      }
+
+      var f = imap.fetch(results, { bodies: '' });//抓取邮件（默认情况下邮件服务器的邮件是未读状态）
+
+      //没有邮件,退出
+      if(f == undefined){
+        imap.end();
+        return;
+      }
+      f.on('message', function(msg, seqno) {
+
+        var mailparser = new MailParser();
+
+
+        msg.on('body', function(stream, info) {
+
+          stream.pipe(mailparser);//将为解析的数据流pipe到mailparser
+
+          //邮件头内容
+          mailparser.on("headers", function(headers) {
+              // console.log("邮件主题: " + headers.get('subject'));
+              // console.log("发件人: " + headers.get('from').text);
+              // // console.log("收件人: " + headers.get('to').text);
+              emailObj['subject'] = headers.get('subject');
+              emailObj['from'] = headers.get('from').text;
+          });
+
+          //邮件内容
+          mailparser.on("data", function(data) {
+            if (data.type === 'text') {//邮件正文
+              emailObj['type'] = "text";
+              emailObj['text'] = data.text;
+              emailObj['html'] = data.html;
+            }
+            if (data.type === 'attachment') {//附件
+              emailObj['type'] = "attachment";
+              emailObj['filename'] = data.filename;
+              emailObj['text'] = data.filename + "已为您保存到本地。";
+              data.content.pipe(fs.createWriteStream(data.filename));//保存附件到当前目录下
+              data.release();
+            }
+          });
+
+        });
+        msg.on('end', function() {
+          console.log(seqno + '完成');
+          emails.push(emailObj);
+          //添加已阅读标志
+          imap.addFlags(results,"SEEN",function(err){
+              console.log(err);
+          });
+        });
+      });
+      f.on('error', function(err) {
+        console.log('抓取出现错误: ' + err);
+      });
+      f.on('end', function() {
+        console.log('所有邮件抓取完成!');
+        imap.end();
+      });
+    });
+  });
+});
+        
+imap.on('error', function(err) {
+  console.log(err);
+});
+
+imap.on('end', function() {
+  // console.log('关闭邮箱');
+  //未读邮件数大于0,调用通知。
+  if(emails.length > 0) {
+      var msg = emails.length >= 1 ? "邮箱里总共有" + (emails.length) + "封未读邮件" : "";
+      //调用通知
+      notif = new Notification({
+        title : emails[0].subject,
+        subtitle : msg,
+        body : emails[0].text,
+        icon : path.join(trayIcon, './img/tomato.png')
+      });
+      notif.show();
+      notif.once('click',function(event){
+        //设置session
+        const ses = session.fromPartition('persist:email')
+        //用户点击了邮件
+        let emailWindow = new BrowserWindow({
+          x: appTray.getBounds().x - 100,
+          y: appTray.getBounds().y,
+          width:300,
+          height:400,
+          darkTheme:true,
+          titleBarStyle:"hidden",
+          webPreferences: {
+            nodeIntegration: true
+          }
+        });
+        global.sharedObject = {
+          someProperty: emailObj
+        };
+        emailWindow.loadFile(path.join(__dirname, '/view/email.html'));
+    });
+  }
+});
+
+function connectEmail() {
+  //连接邮箱前先清空邮件数组
+  emails = [];
+  imap.connect();
+}
+
+setInterval(connectEmail,10000)
