@@ -77,8 +77,8 @@
         //需事先配置好json文件里的textures属性
         //暂不支持保存功能
         TEXURE_CHANGE_MODE : "sequence",
-        IS_START_TEXURE_CHANGE : false,
-        TEXURE_BUTTON_ID : "",
+        IS_START_TEXURE_CHANGE : true,
+        TEXURE_BUTTON_ID : "Change",
         /**
          *  模型定义
             自定义配置模型，同一数组内放置两个模型则为开启双模型
@@ -106,29 +106,40 @@
         
         //初始化的模型大小
         SCALE : 1.1,
-        IS_PLAY_AUDIO : true,
+        IS_PLAY_AUDIO : false,
         //新增属性，audio标签id值   
         AUDIO_ID : "my_audio"
     };
     </script>
     <body onload="InitLive2D()" style="-webkit-app-region: drag">
-        <div class="message" style="opacity:0.2;" width="300" height="50">dsdsdsd</div>
+        <!-- <div class="message" style="opacity:0.2;" width="300" height="50">dsdsdsd</div> -->
         <canvas id="mycanvas" width="300" height="400" ></canvas>
+        <button id="Change" style="display:none;">换衣</button>
   </body>
-  <script>
+        <script>
         // You can also require other files to run in this process
-        require('./renderer.js')
+        require('../js/renderer.js');
+
       </script>
       <script src="../js/live2d.min.js"></script>
       <script src="../js/jquery.min.js"></script>
       <script>
           var message_Path = './';
           var home_Path = 'http://localhost:8088/static/live2D.html';
-         
-          function changeTexure() {
-              var model = new LAppModel();
-              model.changeTexure(1);
-          }
+
+          // In renderer process (web page).
+        const ipcRenderer = require('electron').ipcRenderer;
+        //console.log(ipcRenderer.sendSync('synchronous-message', 'ping')); // prints "pong"
+        
+        //监听消息换装
+        ipcRenderer.on('asynchronous-reply', function(event, arg) {
+            if(arg != '') {
+                LAppDefine.TEXURE_CHANGE_MODE = arg;
+            }
+            document.getElementById("Change").click();
+        });
+        //ipcRenderer.send('asynchronous-message', 'ping');
+
       </script>
       <script src="../js/message.js"></script>
 </html>
