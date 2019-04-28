@@ -39,14 +39,15 @@ npm install && npm start
 - [x] 窗口拖放
 - [x] 消息弹框 
 
-![avatar](app/img/WechatIMG70.png)
+#### 一个大概的系统设置界面？
+![avatar](app/img/system.jpg)
 
 ### TODO
 
-- [ ] 电量监控
+- [ ] 邮箱监控
 - [ ] 消息模块完善
-- [ ] 换装功能
-- [ ] mac通知栏开发
+- [x] 换装功能
+- [x] mac通知栏开发
 - [ ] 等等等
 
 
