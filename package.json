@@ -4,8 +4,8 @@
   "description": "electron-live2d",
   "main": "./app/index.js",
   "scripts": {
-    "start": "electron",
-    "test" : "electron"
+    "start": "electron ./app",
+    "test": "electron ./app"
   },
   "repository": {
     "type": "git",
