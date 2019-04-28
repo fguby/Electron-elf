@@ -43,7 +43,10 @@ npm install && npm start
 
 #### 一个大概的系统设置界面？
 ![avatar](app/img/system.jpg)
-
+#### 快捷键换装
+![avatar](app/img/loli.gif)
+#### 邮件收取以及mac通知栏通知
+![avatar](app/img/email.gif)
 ### TODO
 
 - [ ] 邮箱监控
