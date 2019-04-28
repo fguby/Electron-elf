@@ -1,4 +1,4 @@
-# Elf ![avatar](app/img/xiaojingling.png)
+# Desktop Elf ![avatar](app/img/xiaojingling.png)
 ![Travis](https://img.shields.io/badge/Electron-4.1.4-important.svg)
 <a href="https://github.com/fguby/Elf/releases"><img src="https://img.shields.io/github/release/fguby/Elf.svg?style=flat-square" alt="Current Release"></a>
 ![Travis](https://img.shields.io/badge/live2D-2.1.0-ff69b4.svg?labelColor=blueviolet)
