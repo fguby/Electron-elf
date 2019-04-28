@@ -40,6 +40,7 @@ npm install && npm start
 - [x] 消息弹框
 - [x] 换装功能
 - [x] mac通知栏开发
+- [x] 快捷键切换模型以及换装
 
 #### 一个大概的系统设置界面？
 ![avatar](app/img/system.jpg)
@@ -49,10 +50,13 @@ npm install && npm start
 ![avatar](app/img/email.gif)
 ### TODO
 
-- [ ] 邮箱监控
-- [ ] 消息模块完善
+- [x] 邮箱监控
 - [x] 换装功能
 - [x] mac通知栏开发
+- [ ] 消息模块完善
+- [ ] 快捷键自定义设置
+- [ ] 模型远程下载
+- [ ] 拖动模型文件添加到本地
 - [ ] 等等等
 
 
