@@ -4,5 +4,4 @@ node_js:
 install:
   - "npm install"
 script:
-  - ”apt-get install xvfb“
   - "npm run test"

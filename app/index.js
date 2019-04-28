@@ -274,7 +274,7 @@ function createWindow () {
    //设置此图标的上下文菜单
   appTray.setContextMenu(contextMenu);
   //开启邮箱提醒
-  setSystemObj(initSystemSetUp);
+  //setSystemObj(initSystemSetUp);
 }
 
 // This method will be called when Electron has finished
