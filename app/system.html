@@ -24,13 +24,13 @@
     <!-- Wrap your entire app inside .window -->
     <div class="window">
         <!-- .toolbar-header sits at the top of your app -->
-        <header class="toolbar toolbar-header">
+        <header class="toolbar toolbar-header”>
             <div class="toolbar-actions">
               <div class="btn-group">
-                <button class="btn btn-default active">
+                <button class="btn btn-default">
                   <span class="icon icon-home"></span>
                 </button>
-                <button class="btn btn-default">
+                <!-- <button class="btn btn-default">
                   <span class="icon icon-folder"></span>
                 </button>
                 <button class="btn btn-default">
@@ -41,15 +41,15 @@
                 </button>
                 <button class="btn btn-default">
                   <span class="icon icon-shuffle"></span>
-                </button>
+                </button> -->
               </div>
-              <button class="btn btn-default">
+              <!-- <button class="btn btn-default">
                 <span class="icon icon-home icon-text"></span>
                 Filters
-              </button>
-              <button class="btn btn-default btn-dropdown pull-right">
+              </button> -->
+              <!-- <button class="btn btn-default btn-dropdown pull-right">
                 <span class="icon icon-megaphone"></span>
-              </button>
+              </button> -->
             </div>
         </header>
 
@@ -84,17 +84,29 @@
                 </form>
         </div>
         <div class="padded-more">
-            <label>启动模型设置</label>
-            <select class="form-control" style="height:30px;">
-                    <option>干物妹小埋</option>
-                    <option>路人女主养成方法：加藤惠</option>
-                    <option>从零开始的异世界生活：蕾姆</option>
-                    <option>药水制作师：变装小萝莉</option>
-                    <option>凉风青叶</option>
-            </select>
+            <div class="form-group">
+                <label>启动模型设置</label>
+                <select class="form-control" style="height:30px;">
+                        <option value="xiaomai">干物妹小埋</option>
+                        <option value="katou">路人女主养成方法：加藤惠</option>
+                        <option value="rem">从零开始的异世界生活：蕾姆</option>
+                        <option value="loli">药水制作师：变装小萝莉</option>
+                        <option value="liang">凉风青叶</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>换衣设置</label>
+                <select class="form-control" style="height:30px;">
+                    <option value="sequence">顺序切换</option>
+                    <option value="random">随机切换</option>
+                </select>
+            </div>
             <p>
                 开启邮箱提醒需要用户手动去所属的邮箱客户端里设置pop服务开启。
             </p>
+            <!-- <p>
+                <a>如果你想支持一下我</a>
+            </p> -->
                 <!-- <img src="../img/wechat.jpg" class="wechat-img"></img> -->
         </div>
         <div class="padded-more" style="display:none;">
