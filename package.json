@@ -18,7 +18,7 @@
   ],
   "author": "wushaoqiang",
   "devDependencies": {
-    "electron": "^4.1.4"
+    "electron": "latest"
   },
   "dependencies": {
     "menubar": "latest",
