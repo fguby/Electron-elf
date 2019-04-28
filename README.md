@@ -1,7 +1,7 @@
 # Desktop Elf ![avatar](app/img/xiaojingling.png)
 ![Travis](https://img.shields.io/badge/Electron-4.1.4-important.svg)
 <a href="https://github.com/fguby/Elf/releases"><img src="https://img.shields.io/github/release/fguby/Elf.svg?style=flat-square" alt="Current Release"></a>
-[![](https://travis-ci.com/fguby/Elf.svg?branch=master)](https://travis-ci.org/Alamofire/Alamofire)
+[![](https://travis-ci.com/fguby/Elf.svg?branch=master)](https://travis-ci.com/fguby/Elf)
 ![Travis](https://img.shields.io/badge/live2D-2.1.0-ff69b4.svg?labelColor=blueviolet)
 
 ![avatar](app/img/xiaomai.gif)
