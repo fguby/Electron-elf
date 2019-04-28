@@ -2,9 +2,9 @@
   "name": "Elf",
   "version": "0.0.1",
   "description": "electron-live2d",
-  "main": "index.js",
+  "main": "./app/index.js",
   "scripts": {
-    "start": "electron ./app"
+    "start": "electron"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,9 @@
     "electron": "^4.1.4"
   },
   "dependencies": {
-    "menubar": "latest"
+    "menubar": "latest",
+    "imap": "^0.8.19",
+    "mailparser": "^2.6.0",
+    "lowdb": "latest"
   }
 }
