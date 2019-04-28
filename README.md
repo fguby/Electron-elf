@@ -37,7 +37,9 @@ npm install && npm start
 - [x] 模型切换
 - [x] 内置音效
 - [x] 窗口拖放
-- [x] 消息弹框 
+- [x] 消息弹框
+- [x] 换装功能
+- [x] mac通知栏开发
 
 #### 一个大概的系统设置界面？
 ![avatar](app/img/system.jpg)
