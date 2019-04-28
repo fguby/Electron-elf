@@ -66,11 +66,12 @@ function setSystemObj(callbackFunction) {
     systemObj['password'] = db.get("password").value();
     systemObj['pop'] = db.get("pop").value();
     systemObj['model'] = db.get("model").value();
-    return callbackFunction();
+    callbackFunction();
 }
+
 function initSystemSetUp() {
   imap = new Imap({
-      email : systemObj.email,
+      user : systemObj.email,
       password : systemObj.password,
       host : systemObj.pop
   });
@@ -121,7 +122,7 @@ function createWindow () {
 
     //快捷键注册 模型切换
     globalShortcut.register('CommandOrControl+Y', () => {
-       notif.show();
+      //  notif.show();
        if(modelMenuId == 4) {
          modelMenuId = 0;
        }else{
@@ -162,10 +163,10 @@ function createWindow () {
                }
               },
               {
-                label:'二次元姐妹花',
+                label:'NEW GAME!凉风青叶',
                 type:'radio',
                 click:function() {
-                  changeModel('/view/sisters.html');
+                  changeModel('/view/liang.html');
                   modelMenuId = 2;
                }
               },
@@ -334,6 +335,7 @@ function wechatpay(bounds,browserWindow){
 
 //切换模型
 function changeModel(modelpath) {
+    emails = [];
     var window = BrowserWindow.fromId(windowId);
     window.close();
     mainWindow = new BrowserWindow(windowobj)
@@ -352,7 +354,7 @@ function imapReady() {
   if(imap != null) {
     imap.on('ready', function() {
       openInbox(function(err, box) {
-        // console.log("打开邮箱")
+        console.log("打开邮箱")
         if (err) throw err;
         imap.search(['UNSEEN', ['SINCE', 'May 20, 2017']], function(err, results) {//搜寻2017-05-20以后未读的邮件
           if (err) throw err;
