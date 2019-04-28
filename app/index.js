@@ -1,14 +1,11 @@
 // Modules to control application life and create native browser window
 const electron = require('electron')
-const {session,app, Menu,Tray, BrowserWindow,shell,globalShortcut,Notification} = require('electron')
+const {ipcMain,app, Menu,Tray, BrowserWindow,shell,globalShortcut,Notification} = require('electron')
 const path = require('path');
 var Imap = require('imap');
 var MailParser = require("mailparser").MailParser;
 var fs = require("fs");
 var appTray;
-
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 let notif;
 //菜单栏图标的位置
@@ -17,6 +14,8 @@ var iconY = 0;
 
 //窗口id值
 var windowId;
+//系统设置window
+var systemWindowId;
 //窗口对象
 var windowobj;
 //切换衣服模式
@@ -27,13 +26,61 @@ var modelMenuArr = ["/index.html","/view/pio.html","/view/sisters.html","/view/r
 //邮件obj
 var emails = [];
 var emailObj = {
-      "from"    : "",
-      "type"    : "",
-      "text"    : "",
-      "html"    : "",
-      "filename" : "",
-      "subject" : ""
+    "from"    : "",
+    "type"    : "",
+    "text"    : "",
+    "html"    : "",
+    "filename" : "",
+    "subject" : ""
 };
+
+//设置一个系统的全局变量
+var systemObj = {
+    "email": "",
+    "password": "",
+    "pop": "",
+    "model": "",
+    "texure": "",
+    "change_texure_way": ""
+};
+
+function connectEmail() {
+  //连接邮箱前先清空邮件数组
+  emails = [];
+  imap.connect();
+}
+
+function setEmailInterval(){
+  if(imap != null) setInterval(connectEmail,10000);
+}
+
+//从dbjson里加载数据的function
+function setSystemObj(callbackFunction) {
+    //启动，初始化email
+    var dbPath = path.join(__dirname, '/db/db.json')
+    const low = require('lowdb');
+    const FileSync = require('lowdb/adapters/FileSync');
+    const adapter = new FileSync(dbPath);
+    const db = low(adapter);
+    systemObj['email'] = db.get("email").value();
+    systemObj['password'] = db.get("password").value();
+    systemObj['pop'] = db.get("pop").value();
+    systemObj['model'] = db.get("model").value();
+    return callbackFunction();
+}
+function initSystemSetUp() {
+  imap = new Imap({
+      email : systemObj.email,
+      password : systemObj.password,
+      host : systemObj.pop
+  });
+  //开启email定时执行
+  setEmailInterval();
+  //监听
+  imapReady();
+}
+// Keep a global reference of the window object, if you don't, the window will
+// be closed automatically when the JavaScript object is garbage collected.
 
 function createWindow () {
     const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize
@@ -91,7 +138,7 @@ function createWindow () {
 
    //系统托盘右键菜单
    var trayMenuTemplate = [
-      { 
+      {
           id:1,
           label: '更换模型',
           type: 'submenu',
@@ -150,7 +197,7 @@ function createWindow () {
               wechatpay(appTray.getBounds(),browserWindow)
           }
       },
-      { 
+      {
         id:3,
         label: '👗换装',
         click:function(){
@@ -159,17 +206,37 @@ function createWindow () {
           window.webContents.send('asynchronous-reply', changeTexureWay)
         }
       },
-      { 
+      {
         id:4,
         label: 'website',
         click:function() {
+          //shell打开页面
            shell.openExternal('https://github.com/fguby');
+        }
+      },
+      {
+        id:4,
+        label: '系统设置',
+        click:function() {
+              //let displays = electron.screen.getCursorScreenPoint()
+            let systemWindow = new BrowserWindow({
+              width:600,
+              height:450,
+              title:'',
+              webPreferences: {
+                nodeIntegration: true
+              }
+            });
+            systemWindow.loadFile(path.join(__dirname, '/system.html'));
+            //打开开发者工具
+            // systemWindow.webContents.openDevTools();
+            systemWindowId = systemWindow.id;
         }
       },
       {
         type:'separator'
       },
-      { 
+      {
         id:5,
         label: '换装设置',
         submenu:[
@@ -205,6 +272,8 @@ function createWindow () {
   appTray.setToolTip('还快不点一下.');
    //设置此图标的上下文菜单
   appTray.setContextMenu(contextMenu);
+  //开启邮箱提醒
+  setSystemObj(initSystemSetUp);
 }
 
 // This method will be called when Electron has finished
@@ -228,9 +297,29 @@ app.on('activate', function () {
 //添加自动播放
 app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 
+
+//监听渲染器进程发送过来的消息
+ipcMain.on('system-set-up', (event, arg) => {
+  console.log(arg) // prints "ping"
+  imap.end();
+  //根据用户填写信息设置
+  imap = new Imap({
+    user : arg.email,
+    password : arg.password,
+    host : arg.pop
+  });
+  var window = BrowserWindow.fromId(systemWindowId);
+  window.close();
+  //开启email定时执行
+  setEmailInterval();
+  //监听
+  imapReady();
+  //event.sender.send('asynchronous-reply', 'pong')
+});
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
+//打开微信支付界面
 function wechatpay(bounds,browserWindow){
     //let displays = electron.screen.getCursorScreenPoint()
     let wechatWindow = new BrowserWindow({
@@ -252,140 +341,120 @@ function changeModel(modelpath) {
     mainWindow.loadFile(path.join(__dirname, modelpath));
 }
 
-
-var imap = new Imap({
-    user: '541208156@qq.com', //你的邮箱账号
-    password: 'rdgxyopeaddvbcgb', //你的邮箱密码
-    host: 'pop.qq.com', //邮箱服务器的主机地址
-});
+//初始化imap
+var imap = null;
 
 function openInbox(cb) {
   imap.openBox('INBOX', true, cb);
 }
 
-imap.on('ready', function() {
-
-  openInbox(function(err, box) {
-
-    // console.log("打开邮箱")
-
-    if (err) throw err;
-
-    imap.search(['UNSEEN', ['SINCE', 'May 20, 2017']], function(err, results) {//搜寻2017-05-20以后未读的邮件
-
-      if (err) throw err;
-
-      if(results.length == 0) {
-          imap.end();
-          return;
-      }
-
-      var f = imap.fetch(results, { bodies: '' });//抓取邮件（默认情况下邮件服务器的邮件是未读状态）
-
-      //没有邮件,退出
-      if(f == undefined){
-        imap.end();
-        return;
-      }
-      f.on('message', function(msg, seqno) {
-
-        var mailparser = new MailParser();
-
-
-        msg.on('body', function(stream, info) {
-
-          stream.pipe(mailparser);//将为解析的数据流pipe到mailparser
-
-          //邮件头内容
-          mailparser.on("headers", function(headers) {
-              // console.log("邮件主题: " + headers.get('subject'));
-              // console.log("发件人: " + headers.get('from').text);
-              // // console.log("收件人: " + headers.get('to').text);
-              emailObj['subject'] = headers.get('subject');
-              emailObj['from'] = headers.get('from').text;
+function imapReady() {
+  if(imap != null) {
+    imap.on('ready', function() {
+      openInbox(function(err, box) {
+        // console.log("打开邮箱")
+        if (err) throw err;
+        imap.search(['UNSEEN', ['SINCE', 'May 20, 2017']], function(err, results) {//搜寻2017-05-20以后未读的邮件
+          if (err) throw err;
+          if(results.length == 0) {
+              imap.end();
+              return;
+          }
+          var f = imap.fetch(results, { bodies: '' });//抓取邮件（默认情况下邮件服务器的邮件是未读状态）
+          //没有邮件,退出
+          if(f == undefined){
+            imap.end();
+            return;
+          }
+          f.on('message', function(msg, seqno) {
+            var mailparser = new MailParser();
+            msg.on('body', function(stream, info) {
+              stream.pipe(mailparser);//将为解析的数据流pipe到mailparser
+              //邮件头内容
+              mailparser.on("headers", function(headers) {
+                  // console.log("邮件主题: " + headers.get('subject'));
+                  // console.log("发件人: " + headers.get('from').text);
+                  // // console.log("收件人: " + headers.get('to').text);
+                  emailObj['subject'] = headers.get('subject');
+                  emailObj['from'] = headers.get('from').text;
+              });
+              //邮件内容
+              mailparser.on("data", function(data) {
+                if (data.type === 'text') {//邮件正文
+                  emailObj['type'] = "text";
+                  emailObj['text'] = data.text;
+                  emailObj['html'] = data.html;
+                }
+                if (data.type === 'attachment') {//附件
+                  emailObj['type'] = "attachment";
+                  emailObj['filename'] = data.filename;
+                  emailObj['text'] = data.filename + "已为您保存到本地。";
+                  data.content.pipe(fs.createWriteStream(data.filename));//保存附件到当前目录下
+                  data.release();
+                }
+              });
+            });
+            msg.on('end', function() {
+              // console.log(seqno + '完成');
+              emails.push(emailObj);
+              //添加已阅读标志
+              imap.addFlags(results,"SEEN");
+            });
           });
-
-          //邮件内容
-          mailparser.on("data", function(data) {
-            if (data.type === 'text') {//邮件正文
-              emailObj['type'] = "text";
-              emailObj['text'] = data.text;
-              emailObj['html'] = data.html;
-            }
-            if (data.type === 'attachment') {//附件
-              emailObj['type'] = "attachment";
-              emailObj['filename'] = data.filename;
-              emailObj['text'] = data.filename + "已为您保存到本地。";
-              data.content.pipe(fs.createWriteStream(data.filename));//保存附件到当前目录下
-              data.release();
-            }
+          f.on('error', function(err) {
+            console.log('抓取出现错误: ' + err);
           });
-
-        });
-        msg.on('end', function() {
-          console.log(seqno + '完成');
-          emails.push(emailObj);
-          //添加已阅读标志
-          imap.addFlags(results,"SEEN",function(err){
-              console.log(err);
+          f.on('end', function() {
+            // console.log('所有邮件抓取完成!');
+            imap.end();
           });
         });
-      });
-      f.on('error', function(err) {
-        console.log('抓取出现错误: ' + err);
-      });
-      f.on('end', function() {
-        console.log('所有邮件抓取完成!');
-        imap.end();
       });
     });
-  });
-});
-        
-imap.on('error', function(err) {
-  console.log(err);
-});
 
-imap.on('end', function() {
-  // console.log('关闭邮箱');
-  //未读邮件数大于0,调用通知。
-  if(emails.length > 0) {
-      var msg = emails.length >= 1 ? "邮箱里总共有" + (emails.length) + "封未读邮件" : "";
-      //调用通知
-      notif = new Notification({
-        title : emails[0].subject,
-        subtitle : msg,
-        body : emails[0].text,
-        icon : path.join(trayIcon, './img/tomato.png')
-      });
-      notif.show();
-      notif.once('click',function(event){
-        //设置session
-        const ses = session.fromPartition('persist:email')
-        //用户点击了邮件
-        let emailWindow = new BrowserWindow({
-          x: appTray.getBounds().x - 100,
-          y: appTray.getBounds().y,
-          width:300,
-          height:400,
-          darkTheme:true,
-          titleBarStyle:"hidden",
-          webPreferences: {
-            nodeIntegration: true
-          }
+    imap.on('error', function(err) {
+      console.log(err);
+    });
+
+    imap.on('end', function() {
+      // console.log('关闭邮箱');
+      //未读邮件数大于0,调用通知。
+      if(emails.length > 0) {
+          var msg = emails.length > 1 ? "邮箱里总共有" + (emails.length) + "封未读邮件" : "";
+          //调用通知
+          notif = new Notification({
+            title : emails[0].subject,
+            subtitle : msg,
+            body : emails[0].text
+            // icon : path.join(trayIcon, './img/tomato.png')
+          });
+          notif.show();
+          notif.once('click',function(event){
+            if(emails[0].filename == '') {
+                //用户点击了邮件
+                let emailWindow = new BrowserWindow({
+                  x: appTray.getBounds().x - 100,
+                  y: appTray.getBounds().y,
+                  width:400,
+                  height:300,
+                  darkTheme:true,
+                  titleBarStyle:"hidden",
+                  webPreferences: {
+                    nodeIntegration: true
+                  }
+                });
+                global.sharedObject = {
+                  someProperty: emailObj
+                };
+                emailWindow.loadFile(path.join(__dirname, '/view/email.html'));
+            }else{
+                shell.showItemInFolder("./" + emails[0].filename);
+            }
         });
-        global.sharedObject = {
-          someProperty: emailObj
-        };
-        emailWindow.loadFile(path.join(__dirname, '/view/email.html'));
+      }
     });
   }
-});
-
-function connectEmail() {
-  //连接邮箱前先清空邮件数组
-  emails = [];
-  imap.connect();
 }
 
-setInterval(connectEmail,10000)
+// setEmailInterval();
+
