@@ -1,7 +1,6 @@
-# Desktop Elf ![avatar](app/img/xiaojingling.png)
+# Elf ![avatar](app/img/xiaojingling.png)
 ![Travis](https://img.shields.io/badge/Electron-4.1.4-important.svg)
 <a href="https://github.com/fguby/Elf/releases"><img src="https://img.shields.io/github/release/fguby/Elf.svg?style=flat-square" alt="Current Release"></a>
-[![](https://travis-ci.com/fguby/Elf.svg?branch=master)](https://travis-ci.com/fguby/Elf)
 ![Travis](https://img.shields.io/badge/live2D-2.1.0-ff69b4.svg?labelColor=blueviolet)
 
 ![avatar](app/img/xiaomai.gif)
@@ -68,7 +67,18 @@ npm install && npm start
 
 > 如果喜欢的话，恳请给予一个star，持续watch这个项目最好啦。
 
-一 [这里是最新的测试版dmg文件:alien:](https://github.com/fguby/Elf/releases/tag/v0.1.1/ "releases")
+一 [这里是最新的测试版dmg文件:alien:](https://github.com/fguby/Elf/releases/tag/v0.1.1/ "Elf")
+
+
+---
+
+
+功能 | 快捷键
+---|---
+切换模型 | command + Y
+切换衣服 | command + J
+
+暂时只支持两个快捷键，后续请期待。
 
 ### 意见以及BUG反馈
 一 [issues:speech_balloon:](https://github.com/fguby/Elf/issues "welcome")
