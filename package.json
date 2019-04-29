@@ -5,7 +5,7 @@
   "main": "./app/index.js",
   "scripts": {
     "start": "electron ./app",
-    "test": "xvfb-run electron-mocha ./app"
+    "test": "xvfb-run electron ./app"
   },
   "repository": {
     "type": "git",
