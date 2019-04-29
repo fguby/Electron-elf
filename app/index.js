@@ -21,18 +21,10 @@ var windowobj;
 //切换衣服模式
 var changeTexureWay = "sequence";
 var modelMenuId = 0;
-var modelMenuArr = ["/index.html","/view/pio.html","/view/sisters.html","/view/rem.html","/view/katou.html"];
+var modelMenuArr = ["/index.html","/view/pio.html","/view/liang.html","/view/rem.html","/view/katou.html"];
 
 //邮件obj
 var emails = [];
-var emailObj = {
-    "from"    : "",
-    "type"    : "",
-    "text"    : "",
-    "html"    : "",
-    "filename" : "",
-    "subject" : ""
-};
 
 //设置一个系统的全局变量
 var systemObj = {
@@ -274,7 +266,7 @@ function createWindow () {
    //设置此图标的上下文菜单
   appTray.setContextMenu(contextMenu);
   //开启邮箱提醒
-  //setSystemObj(initSystemSetUp);
+  setSystemObj(initSystemSetUp);
 }
 
 // This method will be called when Electron has finished
@@ -301,20 +293,20 @@ app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 
 //监听渲染器进程发送过来的消息
 ipcMain.on('system-set-up', (event, arg) => {
-  console.log(arg) // prints "ping"
-  imap.end();
-  //根据用户填写信息设置
-  imap = new Imap({
-    user : arg.email,
-    password : arg.password,
-    host : arg.pop
-  });
-  var window = BrowserWindow.fromId(systemWindowId);
-  window.close();
-  //开启email定时执行
-  setEmailInterval();
-  //监听
-  imapReady();
+    console.log(arg) // prints "ping"
+    imap.end();
+    //根据用户填写信息设置
+    imap = new Imap({
+      user : arg.email,
+      password : arg.password,
+      host : arg.pop
+    });
+    var window = BrowserWindow.fromId(systemWindowId);
+    window.close();
+    //开启email定时执行
+    setEmailInterval();
+    //监听
+    imapReady();
   //event.sender.send('asynchronous-reply', 'pong')
 });
 // In this file you can include the rest of your app's specific main process
@@ -352,9 +344,12 @@ function openInbox(cb) {
 
 function imapReady() {
   if(imap != null) {
+    var emailObj = {};
     imap.on('ready', function() {
       openInbox(function(err, box) {
+        var result = [];
         console.log("打开邮箱")
+        imap.expunge();
         if (err) throw err;
         imap.search(['UNSEEN', ['SINCE', 'May 20, 2017']], function(err, results) {//搜寻2017-05-20以后未读的邮件
           if (err) throw err;
@@ -373,7 +368,7 @@ function imapReady() {
             msg.on('body', function(stream, info) {
               stream.pipe(mailparser);//将为解析的数据流pipe到mailparser
               //邮件头内容
-              mailparser.on("headers", function(headers) {
+              mailparser.once("headers", function(headers) {
                   // console.log("邮件主题: " + headers.get('subject'));
                   // console.log("发件人: " + headers.get('from').text);
                   // // console.log("收件人: " + headers.get('to').text);
@@ -398,9 +393,12 @@ function imapReady() {
             });
             msg.on('end', function() {
               // console.log(seqno + '完成');
-              emails.push(emailObj);
-              //添加已阅读标志
-              imap.addFlags(results,"SEEN");
+              if(emailObj.hasOwnProperty("type")) {
+                emails.push(emailObj);
+                //添加已阅读标志
+                imap.addFlags(results,"SEEN");
+                result.push(results);
+              }
             });
           });
           f.on('error', function(err) {
@@ -408,55 +406,67 @@ function imapReady() {
           });
           f.on('end', function() {
             // console.log('所有邮件抓取完成!');
-            imap.end();
+            //imap.end();
+            if(emails.length > 0) {
+                  var msg = emails.length > 1 ? "邮箱里总共有" + (emails.length) + "封未读邮件" : "";
+                  //调用通知
+                  notif = new Notification({
+                    title: emails[0].subject,
+                    subtitle: msg,
+                    body: emails[0].text,
+                    hasReply: true
+                    // icon : path.join(trayIcon, './img/tomato.png')
+                  });
+                  notif.show();
+                  notif.once('click',function(event){
+                    if(!emails[0].hasOwnProperty("filename")) {
+                        //用户点击了邮件
+                        let emailWindow = new BrowserWindow({
+                          x: appTray.getBounds().x - 100,
+                          y: appTray.getBounds().y,
+                          width:400,
+                          height:300,
+                          darkTheme:true,
+                          titleBarStyle:"hidden",
+                          webPreferences: {
+                            nodeIntegration: true
+                          }
+                        });
+                        global.sharedObject = {
+                          someProperty: emailObj
+                        };
+                        emailWindow.loadFile(path.join(__dirname, '/view/email.html'));
+                    }else{
+                        shell.showItemInFolder("./" + emails[0].filename);
+                    }
+                });
+                notif.once('reply',function(event,reply){
+                    if(reply == 'RM') {
+                      imap.addFlags(result[0],"Deleted");
+                      imap.expunge(result[0]);
+                    }
+                });
+              }
+              //imap.end();
           });
         });
       });
-    });
+  });
 
     imap.on('error', function(err) {
       console.log(err);
     });
 
     imap.on('end', function() {
-      // console.log('关闭邮箱');
+        console.log('关闭邮箱');
       //未读邮件数大于0,调用通知。
-      if(emails.length > 0) {
-          var msg = emails.length > 1 ? "邮箱里总共有" + (emails.length) + "封未读邮件" : "";
-          //调用通知
-          notif = new Notification({
-            title : emails[0].subject,
-            subtitle : msg,
-            body : emails[0].text
-            // icon : path.join(trayIcon, './img/tomato.png')
-          });
-          notif.show();
-          notif.once('click',function(event){
-            if(emails[0].filename == '') {
-                //用户点击了邮件
-                let emailWindow = new BrowserWindow({
-                  x: appTray.getBounds().x - 100,
-                  y: appTray.getBounds().y,
-                  width:400,
-                  height:300,
-                  darkTheme:true,
-                  titleBarStyle:"hidden",
-                  webPreferences: {
-                    nodeIntegration: true
-                  }
-                });
-                global.sharedObject = {
-                  someProperty: emailObj
-                };
-                emailWindow.loadFile(path.join(__dirname, '/view/email.html'));
-            }else{
-                shell.showItemInFolder("./" + emails[0].filename);
-            }
-        });
-      }
+    });
+
+    imap.on('expunge',function(seqno){
+        //
+        console.log("已删除消息" + seqno);
     });
   }
 }
 
-// setEmailInterval();
 
