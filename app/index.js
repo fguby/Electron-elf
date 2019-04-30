@@ -27,10 +27,7 @@ var windowId;
 var systemWindowId;
 //窗口对象
 var windowobj;
-//切换衣服模式
-var changeTexureWay = "sequence";
 var modelMenuId = 0;
-var modelMenuArr = ["/index.html", "/view/pio.html", "/view/liang.html", "/view/rem.html", "/view/katou.html"];
 
 //邮件obj
 var emails = [];
@@ -76,6 +73,7 @@ function setSystemObj() {
   systemObj['soundFlag'] = db.get("soundFlag").value();
   systemObj['menu'] = db.get("menu").value();
   systemObj['model_path'] = db.get("model_path").value();
+  systemObj['change_texure_way'] = db.get("change_texure_way").value();
 }
 //初始化系统设置
 setSystemObj();
@@ -122,7 +120,7 @@ function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow(windowobj);
   // 打开开发者工具
-  //ainWindow.webContents.openDevTools()
+  //mainWindow.webContents.openDevTools()
   windowId = mainWindow.id;
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, '/index.html'))
@@ -148,7 +146,7 @@ function createWindow() {
   globalShortcut.register('CommandOrControl+J', () => {
     var window = BrowserWindow.fromId(windowId);
     //发送换装消息
-    window.webContents.send('asynchronous-reply', changeTexureWay)
+    window.webContents.send('asynchronous-reply','ping')
   });
 
   //生成子菜单
@@ -178,22 +176,13 @@ function createWindow() {
     },
     {
       id: 2,
-      label: '💰赞助一下',
+      label: '赞助一下',
       click: function (menuItem, browserWindow, event) {
         wechatpay(appTray.getBounds(), browserWindow)
       }
     },
     {
       id: 3,
-      label: '👗换装',
-      click: function () {
-        var window = BrowserWindow.fromId(windowId);
-        //发送换装消息
-        window.webContents.send('asynchronous-reply', changeTexureWay)
-      }
-    },
-    {
-      id: 4,
       label: 'website',
       click: function () {
         //shell打开页面
@@ -221,26 +210,6 @@ function createWindow() {
     },
     {
       type: 'separator'
-    },
-    {
-      id: 5,
-      label: '换装设置',
-      submenu: [{
-          label: '顺序切换',
-          type: 'radio',
-          checked: true,
-          click: function () {
-            changeTexureWay = "sequence";
-          }
-        },
-        {
-          label: '随机切换',
-          type: 'radio',
-          click: function () {
-            changeTexureWay = "random";
-          }
-        },
-      ]
     },
     {
       label: '退出',
@@ -316,16 +285,6 @@ function wechatpay(bounds, browserWindow) {
   });
   wechatWindow.loadFile(path.join(__dirname, '/view/wechat.html'))
 }
-
-//切换模型
-// function changeModel(modelpath) {
-//     emails = [];
-//     var window = BrowserWindow.fromId(windowId);
-//     window.close();
-//     mainWindow = new BrowserWindow(windowobj)
-//     windowId = mainWindow.id;
-//     mainWindow.loadFile(path.join(__dirname, modelpath));
-// }
 
 //初始化imap
 var imap = null;
@@ -466,6 +425,6 @@ function imapReady() {
 function changeModel(event) {
   //更换模型
   var window = BrowserWindow.fromId(windowId);
-  //发送换装消息
+  //发送消息
   window.webContents.send('changemodel', event.label);
 }
