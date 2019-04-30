@@ -11,6 +11,7 @@ const {
   Notification
 } = require('electron')
 const path = require('path');
+var contextMenu;
 var Imap = require('imap');
 var MailParser = require("mailparser").MailParser;
 var fs = require("fs");
@@ -135,18 +136,22 @@ function createWindow() {
   //快捷键注册 模型切换
   globalShortcut.register('CommandOrControl+Y', () => {
     //  notif.show();
-    if (modelMenuId == 4) {
-      modelMenuId = 0;
-    } else {
-      modelMenuId += 1;
+    var submenus = contextMenu.items[0].submenu.items;
+    for (var i = 0; i < submenus.length; i++) {
+      if (submenus[i].checked) {
+        var n = i == (submenus.length - 1) ? 0 : i + 1;
+        changeModel(submenus[n]);
+        //contextMenu.items[0].submenu.items[i].checked = false;
+        submenus[n].checked = true;
+        break;
+      }
     }
-    changeModel(modelMenuArr[modelMenuId]);
   });
   //快捷键注册 换装
   globalShortcut.register('CommandOrControl+J', () => {
     var window = BrowserWindow.fromId(windowId);
     //发送换装消息
-    window.webContents.send('asynchronous-reply','ping')
+    window.webContents.send('asynchronous-reply', 'ping')
   });
 
   //生成子菜单
@@ -157,13 +162,12 @@ function createWindow() {
     menuObj.label = systemObj["menu"][i]
     menuObj.type = 'radio';
     menuObj.checked = tag;
+    menuObj.enabled = true;
     menuObj.click = function (menuItem) {
       changeModel(menuItem);
     };
     submenuArr.push(menuObj);
   }
-
-  //系统托盘右键菜单
   var trayMenuTemplate = [{
       id: 1,
       label: '更换模型',
@@ -216,16 +220,16 @@ function createWindow() {
       role: 'quit'
     }
   ];
-
   // //系统托盘图标目录
   trayIcon = path.join(__dirname, '');
   appTray = new Tray(path.join(trayIcon, './img/tomato.png'));
   //图标的上下文菜单
-  const contextMenu = Menu.buildFromTemplate(trayMenuTemplate);
+  contextMenu = Menu.buildFromTemplate(trayMenuTemplate);
   //设置此托盘图标的悬停提示内容
   appTray.setToolTip('还快不点一下.');
   //设置此图标的上下文菜单
   appTray.setContextMenu(contextMenu);
+  appTray.setTitle("\u001b[34m 约定的梦幻岛")
   //开启邮箱提醒
   if (systemObj["emailFlag"]) initSystemSetUp();
 }
@@ -423,6 +427,7 @@ function imapReady() {
 }
 
 function changeModel(event) {
+  //event.checked = true;
   //更换模型
   var window = BrowserWindow.fromId(windowId);
   //发送消息

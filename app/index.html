@@ -71,7 +71,7 @@
         MODELS: [
             ["./model/xiaomai/xiaomai.model.json"]
         ],
-
+        NAME: "",
         // 与外部定义的json文件匹配
         MOTION_GROUP_IDLE: "idle", // 空闲时
         MOTION_GROUP_TAP_BODY: "tap_body", // 点击身体时
@@ -99,6 +99,7 @@
     const db = low(adapter);
     //初始尺寸
     var scale;
+
     function setModelPath() {
         //从dbjson里读取系统设置信息
         var model = db.get("model").value();
@@ -111,23 +112,24 @@
                 scale = LAppDefine.SCALE;
             }
         }
+        LAppDefine.NAME = model;
         LAppDefine.MODELS = [models];
         LAppDefine.TEXURE_CHANGE_MODE = db.get("change_texure_way").value();
     }
 
-    function ChangeModel() {
-        const path = require("path");
-        var dbPath = path.join(__dirname, '/db/db.json')
-        const low = require('lowdb');
-        const FileSync = require('lowdb/adapters/FileSync');
-        const adapter = new FileSync(dbPath);
-        const db = low(adapter);
-        LAppDefine.MODELS = [
-            [db.get("model_path").value()[1]]
-        ];
-        // console.log(LAppDefine.MODELS);
-        document.getElementById("Change").click();
-    }
+    // function ChangeModel() {
+    //     const path = require("path");
+    //     var dbPath = path.join(__dirname, '/db/db.json')
+    //     const low = require('lowdb');
+    //     const FileSync = require('lowdb/adapters/FileSync');
+    //     const adapter = new FileSync(dbPath);
+    //     const db = low(adapter);
+    //     LAppDefine.MODELS = [
+    //         [db.get("model_path").value()[1]]
+    //     ];
+    //     // console.log(LAppDefine.MODELS);
+    //     document.getElementById("Change").click();
+    // }
     //从db.json中读取系统配置
     setModelPath();
 </script>
@@ -150,22 +152,23 @@
     //监听消息改变模型
     ipcRenderer.on('changemodel', function (event, arg) {
         var thisScale = LAppDefine.SCALE;
+        var menu = db.get("menu").value();
+        var models = [];
         if (arg != '') {
-            var models = [];
-            var menu = db.get("menu").value();
             for (var i in menu) {
                 if (arg == menu[i]) {
                     models.push(db.get("model_path").value()[i]);
                     LAppDefine.SCALE = db.get("model_size").value()[i];
+                    LAppDefine.NAME = arg;
                 }
             }
-            LAppDefine.MODELS = [models];
-            document.getElementById("Change").click();
-        }
-        modelScaling(LAppDefine.SCALE/(thisScale));
+        } 
+        LAppDefine.MODELS = [models];
+        document.getElementById("Change").click();
+        modelScaling(LAppDefine.SCALE / (thisScale));
     });
     //监听消息改变服装
-    ipcRenderer.on('asynchronous-reply',function(event,arg){
+    ipcRenderer.on('asynchronous-reply', function (event, arg) {
         document.getElementById("texure").click();
     });
 </script>
