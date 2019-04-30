@@ -1,158 +1,187 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="styles/photon.min.css">
 
-    <!-- Electron Javascript -->
-    <!-- <script src="../js/app.js" charset="utf-8"></script> -->
-  </head>
-  <style>
-      body{
-          overflow: hidden;
-      }
-  </style>
+<head>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="styles/photon.min.css">
 
-  <body>
-    <!-- Wrap your entire app inside .window -->
-    <div class="window">
-        <!-- .toolbar-header sits at the top of your app -->
-        <header class="toolbar toolbar-header” style="height:50px;">
-            <div class="toolbar-actions">
-              <div class="btn-group">
-                <button class="btn btn-default active">
-                  <span class="icon icon-home"></span>
-                </button>
-                <button class="btn btn-default">
-                  <span class="icon icon-folder"></span>
-                </button>
-                <button class="btn btn-default">
-                  <span class="icon icon-cloud"></span>
-                </button>
-                <button class="btn btn-default">
-                  <span class="icon icon-popup"></span>
-                </button>
-                <button class="btn btn-default">
-                  <span class="icon icon-shuffle"></span>
-                </button>
-              </div>
-              <!-- <button class="btn btn-default">
+  <!-- Electron Javascript -->
+  <!-- <script src="../js/app.js" charset="utf-8"></script> -->
+</head>
+<style>
+  body {
+    overflow: hidden;
+  }
+
+  .active-show {}
+
+  .active-hidden {
+    display: none;
+  }
+</style>
+
+<body>
+  <!-- Wrap your entire app inside .window -->
+  <div class="window">
+    <!-- .toolbar-header sits at the top of your app -->
+    <header class="toolbar toolbar-header” style=" height:50px;">
+      <div class="toolbar-actions">
+        <div class="btn-group">
+          <button class="btn btn-default active">
+            <span class="icon icon-home"></span>
+          </button>
+          <button class="btn btn-default" onclick="clickIcon()">
+            <span class="icon icon-folder"></span>
+          </button>
+          <button class="btn btn-default">
+            <span class="icon icon-cloud"></span>
+          </button>
+          <button class="btn btn-default">
+            <span class="icon icon-popup"></span>
+          </button>
+          <button class="btn btn-default">
+            <span class="icon icon-shuffle"></span>
+          </button>
+        </div>
+        <!-- <button class="btn btn-default">
                 <span class="icon icon-home icon-text"></span>
                 Filters
-              </button> --> 
-              <!-- <!-- <button class="btn btn-default btn-dropdown pull-right">
+              </button> -->
+        <!-- <!-- <button class="btn btn-default btn-dropdown pull-right">
                 <span class="icon icon-megaphone"></span>
               </button> -->
-            </div>
-        </header>
+      </div>
+    </header>
 
-      <!-- Your app's content goes inside .window-content -->
+    <!-- Your app's content goes inside .window-content -->
     <div class="window-content">
-        <div class="padded-more">
-                <form>
-                    <div class="form-group">
-                        <label>邮箱账号</label>
-                        <input id="email" type="email" class="form-control" placeholder="Email">
-                    </div>
-                    <div class="form-group">
-                        <label>密码</label>
-                        <input id="password" type="email" class="form-control" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                        <label>pop服务地址</label>
-                        <input id="pop" type="email" class="form-control" placeholder="pop服务地址">
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input id="soundFlag" type="checkbox" checked="true">
-                            是否开启音效
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input id="emailFlag" type="checkbox" checked="true">
-                            是否开启邮件提醒
-                        </label>
-                    </div>
-                </form>
+      <div class="padded-more">
+        <form>
+          <div class="form-group">
+            <label>邮箱账号</label>
+            <input id="email" type="email" class="form-control" placeholder="Email">
+          </div>
+          <div class="form-group">
+            <label>密码</label>
+            <input id="password" type="email" class="form-control" placeholder="Password">
+          </div>
+          <div class="form-group">
+            <label>pop服务地址</label>
+            <input id="pop" type="email" class="form-control" placeholder="pop服务地址">
+          </div>
+          <div class="checkbox">
+            <label>
+              <input id="soundFlag" type="checkbox" checked="true">
+              是否开启音效
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input id="emailFlag" type="checkbox" checked="true">
+              是否开启邮件提醒
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="padded-more">
+        <div class="form-group">
+          <label>启动模型设置</label>
+          <select class="form-control" style="height:32px;">
+            <option value="xiaomai">干物妹小埋</option>
+            <option value="katou">路人女主养成方法：加藤惠</option>
+            <option value="rem">从零开始的异世界生活：蕾姆</option>
+            <option value="loli">药水制作师：变装小萝莉</option>
+            <option value="liang">NEW GAME！凉风青叶</option>
+          </select>
         </div>
-        <div class="padded-more">
-            <div class="form-group">
-                <label>启动模型设置</label>
-                <select class="form-control" style="height:30px;">
-                        <option value="xiaomai">干物妹小埋</option>
-                        <option value="katou">路人女主养成方法：加藤惠</option>
-                        <option value="rem">从零开始的异世界生活：蕾姆</option>
-                        <option value="loli">药水制作师：变装小萝莉</option>
-                        <option value="liang">凉风青叶</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>换衣设置</label>
-                <select class="form-control" style="height:30px;">
-                    <option value="sequence">顺序切换</option>
-                    <option value="random">随机切换</option>
-                </select>
-            </div>
-            <p>
-                开启邮箱提醒需要用户手动去所属的邮箱客户端里设置pop服务开启。
-            </p>
-            <!-- <p>
+        <div class="form-group">
+          <label>换衣设置</label>
+          <select class="form-control" style="height:32px;">
+            <option value="sequence">顺序切换</option>
+            <option value="random">随机切换</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>模型尺寸设置</label>
+          <select class="form-control" style="height:32px;">
+            <option value="0.7">0.7</option>
+            <option value="0.8">0.8</option>
+            <option value="0.9">0.9</option>
+            <option value="1.0">1.0</option>
+            <option value="1.1">1.1</option>
+            <option value="1.2">1.2</option>
+          </select>
+        </div>
+        <p>
+          <span style="color:teal;">注：开启邮箱提醒需要用户手动去所属的邮箱客户端里设置pop服务开启。</span>
+        </p>
+        <!-- <p>
                 <a>如果你想支持一下我</a>
             </p> -->
-                <!-- <img src="../img/wechat.jpg" class="wechat-img"></img> -->
-        </div>
-        <div class="padded-more" style="display:none;">
-            <h1>大概这就是第二页？</h1>
-            <p>
-                关于这个软件，只是一时兴起，个人爱好。<br>
-                项目开源在github上，欢迎star，fork，wath。
-            </p>
-        </div>
+        <!-- <img src="../img/wechat.jpg" class="wechat-img"></img> -->
+      </div>
+      <div class="padded-more active-hidden">
+        <h1>大概这就是第二页？</h1>
+        <p>
+          关于这个软件，只是一时兴起，个人爱好。<br>
+          项目开源在github上，欢迎star，fork，wath。
+        </p>
+      </div>
     </div>
     <footer class="toolbar toolbar-footer">
-            <div class="toolbar-actions">
-              <button class="btn btn-default">
-                取消
-              </button>
-              <button onclick="setUpSystem()" class="btn btn-primary pull-right">
-                确定
-              </button>
-            </div>
+      <div class="toolbar-actions">
+        <button class="btn btn-default">
+          取消
+        </button>
+        <button onclick="setUpSystem()" class="btn btn-primary pull-right">
+          确定
+        </button>
+      </div>
     </footer>
-    </div>
-  </body>
+  </div>
+</body>
 <script>
-    const ipcRender = require("electron").ipcRenderer;
-    const path = require("path");
-    var dbPath = path.join(__dirname, '/db/db.json')
-    const low = require('lowdb');
-    const FileSync = require('lowdb/adapters/FileSync');
-    const adapter = new FileSync(dbPath);
-    const db = low(adapter);
-    var setObj = {};
+  const ipcRender = require("electron").ipcRenderer;
+  const path = require("path");
+  var dbPath = path.join(__dirname, '/db/db.json')
+  const low = require('lowdb');
+  const FileSync = require('lowdb/adapters/FileSync');
+  const adapter = new FileSync(dbPath);
+  const db = low(adapter);
+  var setObj = {};
 
-    window.onload = function() {
-      var email = db.get('email');
-      var password = db.get('password');
-      var pop = db.get('pop');
-      document.getElementById("email").value = email;
-      document.getElementById("password").value = password;
-      document.getElementById("pop").value =  pop;
-    }
-    function setUpSystem(){
-        var email = document.getElementById("email").value;
-        var password = document.getElementById("password").value;
-        var pop = document.getElementById("pop").value;
-        var soundFlag = document.getElementById("soundFlag").checked;
-        var emailFlag = document.getElementById("emailFlag").checked;
-        setObj.email = email;
-        setObj.password = password;
-        setObj.pop = pop;
-        setObj.soundFlag = soundFlag;
-        setObj.emailFlag = emailFlag;
-        db.defaults(setObj).write();
-        ipcRender.send('system-set-up',setObj);
-    }
+  window.onload = function () {
+    var email = db.get('email');
+    var password = db.get('password');
+    var pop = db.get('pop');
+    document.getElementById("email").value = email;
+    document.getElementById("password").value = password;
+    document.getElementById("pop").value = pop;
+  }
+
+  function setUpSystem() {
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+    var pop = document.getElementById("pop").value;
+    var soundFlag = document.getElementById("soundFlag").checked;
+    var emailFlag = document.getElementById("emailFlag").checked;
+    setObj.email = email;
+    setObj.password = password;
+    setObj.pop = pop;
+    setObj.soundFlag = soundFlag;
+    setObj.emailFlag = emailFlag;
+    db.defaults(setObj).write();
+    ipcRender.send('system-set-up', setObj);
+  }
+  // debugger;
+  // var icons = document.getElementsByClassName("btn");
+  // icons.addEventListener("click",function(event){
+  //     alert(1);
+  //     console.log(event);
+  // });
+  function clickIcon(){
+    
+  }
 </script>
+
 </html>
