@@ -15,26 +15,6 @@
             padding: 0px;
             overflow: hidden;
         }
-
-        .message {
-            opacity: 1;
-            margin: 0;
-            margin-top: 20px;
-            padding: 7px;
-            text-align: center;
-            border: 1px solid rgba(255, 137, 255, .4);
-            border-radius: 12px;
-            background-color: #fff;
-            box-shadow: 0 3px 15px 2px rgba(255, 137, 255, .4);
-            font-size: 13px;
-            text-overflow: ellipsis;
-            text-transform: uppercase;
-            animation-delay: 5s;
-            animation-duration: 50s;
-            animation-iteration-count: infinite;
-            animation-name: shake;
-            animation-timing-function: ease-in-out;
-        }
     </style>
 </head>
 <script>
@@ -78,9 +58,9 @@
         //衣服切换模式 目前只支持两种 sequence-顺序 random-随机
         //需事先配置好json文件里的textures属性
         //暂不支持保存功能
-        TEXURE_CHANGE_MODE: "sequence",
-        IS_START_TEXURE_CHANGE: false,
-        TEXURE_BUTTON_ID: "",
+        TEXURE_CHANGE_MODE: "",
+        IS_START_TEXURE_CHANGE: true,
+        TEXURE_BUTTON_ID: "texure",
         /**
          *  模型定义
             自定义配置模型，同一数组内放置两个模型则为开启双模型
@@ -117,7 +97,8 @@
     const FileSync = require('lowdb/adapters/FileSync');
     const adapter = new FileSync(dbPath);
     const db = low(adapter);
-
+    //初始尺寸
+    var scale;
     function setModelPath() {
         //从dbjson里读取系统设置信息
         var model = db.get("model").value();
@@ -127,9 +108,11 @@
             if (model == menu[i]) {
                 models.push(db.get("model_path").value()[i]);
                 LAppDefine.SCALE = db.get("model_size").value()[i];
+                scale = LAppDefine.SCALE;
             }
         }
         LAppDefine.MODELS = [models];
+        LAppDefine.TEXURE_CHANGE_MODE = db.get("change_texure_way").value();
     }
 
     function ChangeModel() {
@@ -154,6 +137,7 @@
     <!-- <div class="message" style="opacity:0.2;" width="300" height="50">dsdsdsd</div> -->
     <canvas id="mycanvas" width="300" height="400"></canvas>
     <button id="Change" style="display:none"></button>
+    <button id="texure" style="display:none"></button>
 </body>
 <script>
     // You can also require other files to run in this process
@@ -163,8 +147,9 @@
 <script>
     const ipcRenderer = require('electron').ipcRenderer;
     //console.log(ipcRenderer.sendSync('synchronous-message', 'ping')); // prints "pong"
-    //监听消息换装
+    //监听消息改变模型
     ipcRenderer.on('changemodel', function (event, arg) {
+        var thisScale = LAppDefine.SCALE;
         if (arg != '') {
             var models = [];
             var menu = db.get("menu").value();
@@ -177,7 +162,11 @@
             LAppDefine.MODELS = [models];
             document.getElementById("Change").click();
         }
-        modelScaling(LAppDefine.SCALE);
+        modelScaling(LAppDefine.SCALE/(thisScale));
+    });
+    //监听消息改变服装
+    ipcRenderer.on('asynchronous-reply',function(event,arg){
+        document.getElementById("texure").click();
     });
 </script>
 
