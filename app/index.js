@@ -258,21 +258,29 @@ app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 
 //监听渲染器进程发送过来的消息
 ipcMain.on('system-set-up', (event, arg) => {
-  console.log(arg) // prints "ping"
-  imap.end();
-  //根据用户填写信息设置
-  imap = new Imap({
-    user: arg.email,
-    password: arg.password,
-    host: arg.pop
-  });
   var window = BrowserWindow.fromId(systemWindowId);
   window.close();
-  //开启email定时执行
-  setEmailInterval();
-  //监听
-  imapReady();
-  //event.sender.send('asynchronous-reply', 'pong')
+  if (arg == 'cancel') {
+    return;
+  } else {
+    console.log(arg) // prints "ping"
+    if(arg.emailFlag) {
+      imap.end();
+      //根据用户填写信息设置
+      imap = new Imap({
+        user: arg.email,
+        password: arg.password,
+        host: arg.pop
+      });
+      //开启email定时执行
+      setEmailInterval();
+      //监听
+      imapReady();
+    }
+    var obj = {};
+    obj.label = arg.model;
+    changeModel(obj);
+  }
 });
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
