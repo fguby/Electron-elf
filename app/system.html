@@ -86,30 +86,14 @@
       <div class="padded-more">
         <div class="form-group">
           <label>启动模型设置</label>
-          <select class="form-control" style="height:32px;">
-            <option value="xiaomai">干物妹小埋</option>
-            <option value="katou">路人女主养成方法：加藤惠</option>
-            <option value="rem">从零开始的异世界生活：蕾姆</option>
-            <option value="loli">药水制作师：变装小萝莉</option>
-            <option value="liang">NEW GAME！凉风青叶</option>
+          <select class="form-control" style="height:32px;" id="model-select">
           </select>
         </div>
         <div class="form-group">
           <label>换衣设置</label>
-          <select class="form-control" style="height:32px;">
+          <select class="form-control" style="height:32px;" id="texure-select">
             <option value="sequence">顺序切换</option>
             <option value="random">随机切换</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>模型尺寸设置</label>
-          <select class="form-control" style="height:32px;">
-            <option value="0.7">0.7</option>
-            <option value="0.8">0.8</option>
-            <option value="0.9">0.9</option>
-            <option value="1.0">1.0</option>
-            <option value="1.1">1.1</option>
-            <option value="1.2">1.2</option>
           </select>
         </div>
         <p>
@@ -130,7 +114,7 @@
     </div>
     <footer class="toolbar toolbar-footer">
       <div class="toolbar-actions">
-        <button class="btn btn-default">
+        <button class="btn btn-default" onclick="cancel()">
           取消
         </button>
         <button onclick="setUpSystem()" class="btn btn-primary pull-right">
@@ -148,30 +132,64 @@
   const FileSync = require('lowdb/adapters/FileSync');
   const adapter = new FileSync(dbPath);
   const db = low(adapter);
-  var setObj = {};
 
   window.onload = function () {
     var email = db.get('email');
     var password = db.get('password');
     var pop = db.get('pop');
+    var menus = db.get('menu').value();
+    var model = db.get('model').value();
+    var change_texure_way = db.get('change_texure_way').value();
     document.getElementById("email").value = email;
     document.getElementById("password").value = password;
     document.getElementById("pop").value = pop;
+    var select = document.getElementById("model-select");
+    var select_2 = document.getElementById("texure-select");
+    var html = "";
+    for(var i in menus){
+      if(model == menus[i]) {
+        html += '<option selected="true">' + menus[i] + '</option>';
+      }else {
+        html += '<option>' + menus[i] + '</option>';
+      }
+    }
+    select.innerHTML = html;
+    for(var n in select_2){
+      if(change_texure_way == select_2[n].value) {
+        select_2[n].selected = true;
+      }
+    }
   }
 
   function setUpSystem() {
+    var setObj = {};
     var email = document.getElementById("email").value;
     var password = document.getElementById("password").value;
     var pop = document.getElementById("pop").value;
     var soundFlag = document.getElementById("soundFlag").checked;
     var emailFlag = document.getElementById("emailFlag").checked;
+    var index = document.getElementById("model-select").selectedIndex;
+    var texureIndex = document.getElementById("texure-select").selectedIndex;
     setObj.email = email;
     setObj.password = password;
     setObj.pop = pop;
     setObj.soundFlag = soundFlag;
     setObj.emailFlag = emailFlag;
-    db.defaults(setObj).write();
+    setObj.model = document.getElementById("model-select").options[index].text;
+    setObj.change_texure_way = document.getElementById("texure-select").options[texureIndex].value;
+    // db.defaults(setObj).write();
+    db.set('model',setObj.model).write();
+    db.set('email',email).write();
+    db.set('password',password).write();
+    db.set('pop',pop).write();
+    db.set('soundFlag',soundFlag).write();
+    db.set('emailFlag',emailFlag).write();
+    db.set('change_texure_way',setObj.change_texure_way).write();
     ipcRender.send('system-set-up', setObj);
+  }
+
+  function cancel() {
+    ipcRender.send('system-set-up', "cancel");
   }
   // debugger;
   // var icons = document.getElementsByClassName("btn");
@@ -180,7 +198,6 @@
   //     console.log(event);
   // });
   function clickIcon(){
-    
   }
 </script>
 
