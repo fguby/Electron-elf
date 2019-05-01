@@ -4,13 +4,27 @@
   "pop": "pop.qq.com",
   "soundFlag": true,
   "emailFlag": true,
-  "model": "干物妹小埋",
-  "menu": ["干物妹小埋", "药水制作师小萝莉", "NEW GAME！凉风青叶",
-    "从零开始的异世界生活:蕾姆", "路人女主养成方法:加藤惠"
+  "model": "NEW GAME！凉风青叶",
+  "menu": [
+    "干物妹小埋",
+    "药水制作师小萝莉",
+    "NEW GAME！凉风青叶",
+    "从零开始的异世界生活:蕾姆",
+    "路人女主养成方法:加藤惠"
   ],
-  "model_path": ["./model/xiaomai/xiaomai.model.json", "./model/Pio/model.json", "./model/liang/2.json",
-    "./model/rem/model.json", "./model/katou_01/katou_01.model.json"
+  "model_path": [
+    "./model/xiaomai/xiaomai.model.json",
+    "./model/Pio/model.json",
+    "./model/liang/2.json",
+    "./model/rem/model.json",
+    "./model/katou_01/katou_01.model.json"
   ],
-  "model_size": [0.8, 1.0, 1.1, 1.2, 1.2],
-  "change_texure_way": "sequence"
+  "model_size": [
+    0.8,
+    1,
+    1.1,
+    1.2,
+    1.2
+  ],
+  "change_texure_way": "random"
 }
