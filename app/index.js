@@ -2,6 +2,7 @@
 const electron = require('electron')
 const {
   ipcMain,
+  dialog,
   app,
   Menu,
   Tray,
@@ -11,6 +12,7 @@ const {
   Notification
 } = require('electron')
 const path = require('path');
+var spawn = require('child_process');
 var contextMenu;
 var Imap = require('imap');
 var MailParser = require("mailparser").MailParser;
@@ -121,7 +123,7 @@ function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow(windowobj);
   // 打开开发者工具
-  //mainWindow.webContents.openDevTools()
+ // mainWindow.webContents.openDevTools()
   windowId = mainWindow.id;
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, '/index.html'))
@@ -180,13 +182,6 @@ function createWindow() {
     },
     {
       id: 2,
-      label: '赞助一下',
-      click: function (menuItem, browserWindow, event) {
-        wechatpay(appTray.getBounds(), browserWindow)
-      }
-    },
-    {
-      id: 3,
       label: 'website',
       click: function () {
         //shell打开页面
@@ -194,7 +189,7 @@ function createWindow() {
       }
     },
     {
-      id: 4,
+      id: 3,
       label: '系统设置',
       click: function () {
         //let displays = electron.screen.getCursorScreenPoint()
@@ -208,12 +203,34 @@ function createWindow() {
         });
         systemWindow.loadFile(path.join(__dirname, '/system.html'));
         //打开开发者工具
-        // systemWindow.webContents.openDevTools();
+        //systemWindow.webContents.openDevTools();
         systemWindowId = systemWindow.id;
       }
     },
     {
+      id: 4,
+      label: '导入模型文件',
+      click: function () {
+        dialog.showOpenDialog(null,{
+            title:"请选择文件",
+            properties:["openDirectory"],
+            message:"选择model.json文件所在文件夹"
+        },function(filePaths,securityScopedBookmarks){
+            if(filePaths != undefined){
+              var command = 'mv '+ filePaths + "/* " +path.join(__dirname,'/model');
+              spawn.exec(command);
+            }
+        });
+      }
+    },
+    {
       type: 'separator'
+    },
+    {
+      label: '赞助一下',
+      click: function (menuItem, browserWindow, event) {
+        wechatpay(appTray.getBounds(), browserWindow)
+      }
     },
     {
       label: '退出',
@@ -255,6 +272,14 @@ app.on('activate', function () {
 //添加自动播放
 app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 
+//监听拖放删除
+ipcMain.on('deletefile', (event, filePath) => {
+      for(var i in filePath) {
+        //移动到废纸篓
+        var command = "mv " + filePath[i] + "  ~/.Trash/";
+        spawn.exec(command);
+      }
+});
 
 //监听渲染器进程发送过来的消息
 ipcMain.on('system-set-up', (event, arg) => {
