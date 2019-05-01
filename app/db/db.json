@@ -1,9 +1,8 @@
 {
-  "email": "541208156@qq.com",
-  "password": "rdgxyopeaddvbcgb",
-  "pop": "pop.qq.com",
-  "soundFlag": true,
-  "emailFlag": true,
+  "email": "",
+  "password": "",
+  "pop": "",
+  "emailFlag": false,
   "model": "NEW GAME！凉风青叶",
   "menu": [
     "干物妹小埋",
@@ -26,5 +25,5 @@
     1.2,
     1.2
   ],
-  "change_texure_way": "random"
+  "change_texure_way": "sequence"
 }
