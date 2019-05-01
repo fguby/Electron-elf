@@ -116,21 +116,6 @@
         LAppDefine.MODELS = [models];
         LAppDefine.TEXURE_CHANGE_MODE = db.get("change_texure_way").value();
     }
-
-    // function ChangeModel() {
-    //     const path = require("path");
-    //     var dbPath = path.join(__dirname, '/db/db.json')
-    //     const low = require('lowdb');
-    //     const FileSync = require('lowdb/adapters/FileSync');
-    //     const adapter = new FileSync(dbPath);
-    //     const db = low(adapter);
-    //     LAppDefine.MODELS = [
-    //         [db.get("model_path").value()[1]]
-    //     ];
-    //     // console.log(LAppDefine.MODELS);
-    //     document.getElementById("Change").click();
-    // }
-    //从db.json中读取系统配置
     setModelPath();
 </script>
 
@@ -162,7 +147,7 @@
                     LAppDefine.NAME = arg;
                 }
             }
-        } 
+        }
         LAppDefine.MODELS = [models];
         document.getElementById("Change").click();
         modelScaling(LAppDefine.SCALE / (thisScale));
