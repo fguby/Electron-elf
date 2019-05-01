@@ -27,10 +27,10 @@
     <header class="toolbar toolbar-header” style=" height:50px;">
       <div class="toolbar-actions">
         <div class="btn-group">
-          <button class="btn btn-default active">
+          <button class="btn btn-default active" onclick="clickIcon(0)">
             <span class="icon icon-home"></span>
           </button>
-          <button class="btn btn-default" onclick="clickIcon()">
+          <button class="btn btn-default" onclick="clickIcon(1)">
             <span class="icon icon-folder"></span>
           </button>
           <button class="btn btn-default">
@@ -55,7 +55,7 @@
 
     <!-- Your app's content goes inside .window-content -->
     <div class="window-content">
-      <div class="padded-more">
+      <div class="padded-more padded-view" id=”padded0“>
         <form>
           <div class="form-group">
             <label>邮箱账号</label>
@@ -71,19 +71,13 @@
           </div>
           <div class="checkbox">
             <label>
-              <input id="soundFlag" type="checkbox" checked="true">
-              是否开启音效
-            </label>
-          </div>
-          <div class="checkbox">
-            <label>
-              <input id="emailFlag" type="checkbox" checked="true">
+              <input id="emailFlag" type="checkbox">
               是否开启邮件提醒
             </label>
           </div>
         </form>
       </div>
-      <div class="padded-more">
+      <div class="padded-more padded-view">
         <div class="form-group">
           <label>启动模型设置</label>
           <select class="form-control" style="height:32px;" id="model-select">
@@ -104,7 +98,7 @@
             </p> -->
         <!-- <img src="../img/wechat.jpg" class="wechat-img"></img> -->
       </div>
-      <div class="padded-more active-hidden">
+      <div class="padded-more active-hidden padded-view" id=”padded1“>
         <h1>大概这就是第二页？</h1>
         <p>
           关于这个软件，只是一时兴起，个人爱好。<br>
@@ -132,6 +126,7 @@
   const FileSync = require('lowdb/adapters/FileSync');
   const adapter = new FileSync(dbPath);
   const db = low(adapter);
+  var view = 0;
 
   window.onload = function () {
     var email = db.get('email');
@@ -146,16 +141,16 @@
     var select = document.getElementById("model-select");
     var select_2 = document.getElementById("texure-select");
     var html = "";
-    for(var i in menus){
-      if(model == menus[i]) {
+    for (var i in menus) {
+      if (model == menus[i]) {
         html += '<option selected="true">' + menus[i] + '</option>';
-      }else {
+      } else {
         html += '<option>' + menus[i] + '</option>';
       }
     }
     select.innerHTML = html;
-    for(var n in select_2){
-      if(change_texure_way == select_2[n].value) {
+    for (var n in select_2) {
+      if (change_texure_way == select_2[n].value) {
         select_2[n].selected = true;
       }
     }
@@ -178,13 +173,13 @@
     setObj.model = document.getElementById("model-select").options[index].text;
     setObj.change_texure_way = document.getElementById("texure-select").options[texureIndex].value;
     // db.defaults(setObj).write();
-    db.set('model',setObj.model).write();
-    db.set('email',email).write();
-    db.set('password',password).write();
-    db.set('pop',pop).write();
-    db.set('soundFlag',soundFlag).write();
-    db.set('emailFlag',emailFlag).write();
-    db.set('change_texure_way',setObj.change_texure_way).write();
+    db.set('model', setObj.model).write();
+    db.set('email', email).write();
+    db.set('password', password).write();
+    db.set('pop', pop).write();
+    db.set('soundFlag', soundFlag).write();
+    db.set('emailFlag', emailFlag).write();
+    db.set('change_texure_way', setObj.change_texure_way).write();
     ipcRender.send('system-set-up', setObj);
   }
 
@@ -197,7 +192,48 @@
   //     alert(1);
   //     console.log(event);
   // });
-  function clickIcon(){
+  function clickIcon(n) {
+    debugger;
+    var icons = document.getElementsByClassName("btn-default");
+    removeClass(icons[view], "active");
+    icons[n].classList.add("active");
+    var views = document.getElementsByClassName("padded-view");
+    switch (n) {
+      case 0:
+        removeClass(views[0], "active-hidden");
+        removeClass(views[1], "active-hidden");
+        views[2].classList.add("active-hidden");
+        break;
+      case 1:
+        removeClass(views[n + 1], "active-hidden");
+        views[0].classList.add("active-hidden");
+        views[1].classList.add("active-hidden");
+        break;
+    }
+    view = n;
+  }
+
+  function removeClass(obj, classname) {
+    //如果原来有class
+    if (obj.className != "") {
+      var arrClassName = obj.className.split(" ");
+      var _index = arrIndexOf(arrClassName, classname);
+      //如果有需要移除的class
+      if (_index != -1) {
+        arrClassName.splice(_index, 1); //删除存在的class值
+        obj.className = arrClassName.join(" "); //将数组以空格连接成字符串放到元素的class属性里
+      }
+    }
+    //如果原来没有class无操作
+  }
+
+  function arrIndexOf(arr, v) {
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i] == v) {
+        return i;
+      }
+    }
+    return -1;
   }
 </script>
 
