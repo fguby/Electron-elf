@@ -156,6 +156,33 @@
     ipcRenderer.on('asynchronous-reply', function (event, arg) {
         document.getElementById("texure").click();
     });
+
+    //文件拖放删除
+    function initDragIn() {
+        window.ondragover = function (e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+            return false;
+        };
+
+        window.ondrop = function (e) {
+            e.preventDefault();
+            var files = [];
+            for (var i = 0; i < e.dataTransfer.files.length; ++i) {
+                console.log(e.dataTransfer.files[i].path);
+                files.push(e.dataTransfer.files[i].path);
+            }
+            ipcRenderer.send('deletefile', files);
+            return false;
+        };
+
+        window.ondragleave = function () {
+            return false;
+        };
+    }
+
+
+    initDragIn();
 </script>
 
 </html>
