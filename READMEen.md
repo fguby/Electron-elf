@@ -13,11 +13,11 @@
 
 ### Related technology
 
-一 [构建跨平台的应用：Electron](https://electronjs.org/ "electron")
+一 [Electron](https://electronjs.org/ "electron")
 
-一 [二次元技术-live2D](https://www.live2d.com/ja/ "live2D")
+一 [live2D](https://www.live2d.com/ja/ "live2D")
 
-一 [live2D Web插件](https://github.com/fguby/live2D "live2D")
+一 [live2D Web](https://github.com/fguby/live2D "live2D")
 
 ### Quick start
 
@@ -39,7 +39,7 @@ cd Elf
 npm install && npm start
 ```
 
-### 支持功能
+### Supported functions
 
 - [x] model switching
 - [x] Built-in sound
@@ -56,7 +56,7 @@ npm install && npm start
 
 ![avatar](app/img/system.jpg)
 
-#### 快捷键换装
+#### Shortcut change clothing
 
 ![avatar](app/img/loli.gif)
 
@@ -75,7 +75,7 @@ npm install && npm start
 ### TODO
 
 - [x] Mailbox monitoring
-- [x] 换装功能
+- [x] Dressup function
 - [x] mac notification bar development
 - [ ] Model remote download
 - [ ] Message module perfect
@@ -88,17 +88,17 @@ npm install && npm start
 
 > If you like, please give a star, it is best to keep watching this project.
 
-一 [这里是最新的测试版dmg文件:alien:](https://github.com/fguby/Elf/releases/tag/v0.1.1/ "Elf")
+一 [The latest version of the test dmg file:alien:](https://github.com/fguby/Elf/releases/tag/v0.1.1/ "Elf")
 
 ---
 
-功能 | hot key
+function | hot key
 --- | ---
 Switching model | Command + Y
-切换衣服 | Command + J
+Shortcut change clothing | Command + J
 
 For the time being, only two shortcut keys are supported. Please follow up later.
 
-### 意见以及BUG反馈
+### Comments and BUG feedback
 
 An [issue:speech_balloon:](https://github.com/fguby/Elf/issues "Welcome")
