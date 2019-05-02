@@ -4,7 +4,7 @@
 [![](https://travis-ci.com/fguby/Elf.svg?branch=master)](https://travis-ci.org/Alamofire/Alamofire)
 ![Travis](https://img.shields.io/badge/live2D-2.1.0-ff69b4.svg?labelColor=blueviolet)
 
-![avatar](app/img/yanshi.gif)
+![avatar](app/img/yanshi1.gif)
 
 > 使用Electron、live2D开发的一款二次元桌面应用。
 
