@@ -4,13 +4,13 @@
 [![](https://travis-ci.com/fguby/Elf.svg?branch=master)](https://travis-ci.org/Alamofire/Alamofire)
 ![Travis](https://img.shields.io/badge/live2D-2.1.0-ff69b4.svg?labelColor=blueviolet)
 
-![avatar](app/img/xiaomai.gif)
+![avatar](app/img/yanshi.gif)
 
 > 使用Electron、live2D开发的一款二次元桌面应用。
 
 ---
 
-### 相关地址
+### 相关技术
 
 一 [构建跨平台的应用：Electron](https://electronjs.org/ "electron")
 
@@ -44,6 +44,7 @@ npm install && npm start
 - [x] 文本邮件收取以及通知
 - [x] 附件邮件自动下载附件至本地
 - [x] 快捷键切换模型以及换装
+- [x] 拖动文件至模型区域触发删除功能
 
 #### 一个大概的系统设置界面？
 ![avatar](app/img/system.jpg)
@@ -53,6 +54,8 @@ npm install && npm start
 ![avatar](app/img/email.gif)
 #### 回复RM命令删除邮件
 ![avatar](app/img/email111.gif)
+#### 拖动文件到模型区域可删除文件
+![avatar](app/img/lajitong1.gif)
 ### TODO
 
 - [x] 邮箱监控
