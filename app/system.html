@@ -99,11 +99,15 @@
         <!-- <img src="../img/wechat.jpg" class="wechat-img"></img> -->
       </div>
       <div class="padded-more active-hidden padded-view" id=”padded1“>
-        <h1>大概这就是第二页？</h1>
-        <p>
-          关于这个软件，只是一时兴起，个人爱好。<br>
-          项目开源在github上，欢迎star，fork，wath。
-        </p>
+        <div class="form-group">
+          <label>新增模型选择</label>
+          <select class="form-control" style="height:32px;" id="new—model-select">
+          </select>
+        </div>
+        <div class="form-group">
+          <label>菜单名称</label>
+          <input id="menu" type="email" class="form-control" placeholder="设置菜单">
+        </div>
       </div>
     </div>
     <footer class="toolbar toolbar-footer">
@@ -121,6 +125,7 @@
 <script>
   const ipcRender = require("electron").ipcRenderer;
   const path = require("path");
+  var fs = require("fs");
   var dbPath = path.join(__dirname, '/db/db.json')
   const low = require('lowdb');
   const FileSync = require('lowdb/adapters/FileSync');
@@ -149,8 +154,21 @@
       }
     }
     select.innerHTML = html;
+    //读取模型文件目录
+    var modelPath = path.join(__dirname, '/model/user_models');
+    let files = fs.readdirSync(modelPath);
+    var model_html = '<option value="">请选择</option>';
+    files.forEach(function (item, index) {
+      let fpath = path.join(modelPath, item);
+      let stat = fs.statSync(fpath);
+      if (stat.isDirectory() == true) {
+        model_html += '<option value="' + item + '">' + item + '</option>';
+      }
+    });
+    var newSelect = document.getElementById("new—model-select");
+    newSelect.innerHTML = model_html;
     for (var n in select_2) {
-      if (change_texure_way == select_2[n].value) {
+      if (change_texure_way == select_2.options[n].value) {
         select_2[n].selected = true;
       }
     }
@@ -164,12 +182,42 @@
     var emailFlag = document.getElementById("emailFlag").checked;
     var index = document.getElementById("model-select").selectedIndex;
     var texureIndex = document.getElementById("texure-select").selectedIndex;
+    var newModel = document.getElementById("new—model-select");
+    var newModelIndex = newModel.selectedIndex;
+    var menuName = document.getElementById("menu").value;
     setObj.email = email;
     setObj.password = password;
     setObj.pop = pop;
     setObj.emailFlag = emailFlag;
     setObj.model = document.getElementById("model-select").options[index].text;
     setObj.change_texure_way = document.getElementById("texure-select").options[texureIndex].value;
+    debugger;
+    if(newModelIndex != 0 && menuName != ''){
+      var new_model = newModel.options[newModelIndex].value;
+      // setObj.menu_name = menuName;
+      var menus = db.get("menu").value();
+      var modelPaths = db.get("model_path").value();
+      var newModelPath = "./model/user_models/" + new_model + "/model.json";
+      var flag = true;
+      //判断是否是新增模型
+      for(var i in modelPaths) {
+        if(modelPaths[i] == newModelPath){
+          menus[i] = menuName;
+          db.set("menu",menus).write();
+          flag = false;
+          break;
+        }
+      }
+      if(flag) {
+        menus.push(menuName);
+        db.set("menu",menus).write();
+        modelPaths.push(newModelPath);
+        db.set("model_path",modelPaths).write();
+        var modelSizes = db.get("model_size").value();
+        modelSizes.push(1.0);
+        db.set("model_size",modelSizes).write();
+      }
+    }
     // db.defaults(setObj).write();
     db.set('model', setObj.model).write();
     db.set('email', email).write();
@@ -190,7 +238,6 @@
   //     console.log(event);
   // });
   function clickIcon(n) {
-    debugger;
     var icons = document.getElementsByClassName("btn-default");
     removeClass(icons[view], "active");
     icons[n].classList.add("active");
