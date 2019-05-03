@@ -7,12 +7,14 @@ node_js:
   - "9.3.0"
 install:
   - npm install -g codecov
+  - cd istanbul-mocha && npm install
   - export DISPLAY=':99.0'
   - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
   - "npm install"
   - "npm i -g electron-mocha"
 before_script:
   - export DISPLAY=:99.0; sh -e /etc/init.d/xvfb start
+  - export CODECOV_TOKEN="d6386ae7-c27b-475b-9ce8-408b8f70fe26"
 script:
   - istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
   - codecov
