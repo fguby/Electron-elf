@@ -123,7 +123,7 @@ function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow(windowobj);
   // 打开开发者工具
-  // mainWindow.webContents.openDevTools()
+  //mainWindow.webContents.openDevTools()
   windowId = mainWindow.id;
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, '/index.html'))
@@ -217,8 +217,15 @@ function createWindow() {
           message: "选择model.json文件所在文件夹"
         }, function (filePaths, securityScopedBookmarks) {
           if (filePaths != undefined) {
-            var command = 'mv ' + filePaths + "/* " + path.join(__dirname, '/model');
-            spawn.exec(command);
+            var arrs = filePaths[0].split("\/");
+            var filename = arrs[arrs.length - 1];
+            var command = 'mv ' + filePaths + " " + path.join(__dirname, '/model/user_models/');
+            spawn.exec(command, (error, stdout, stderr) => {
+              if (error) {
+                console.error(`exec error: ${error}`);
+                return;
+              }
+            });
           }
         });
       }
@@ -279,7 +286,7 @@ ipcMain.on('deletefile', (event, filePath) => {
     // var command = "mv " + filePath[i] + "  ~/.Trash/";
     // spawn.exec(command);
     var flag = shell.moveItemToTrash(filePath[i]);
-    if(flag == true) shell.beep();
+    if (flag == true) shell.beep();
   }
 });
 
