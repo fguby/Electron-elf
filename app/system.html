@@ -33,7 +33,7 @@
           <button class="btn btn-default" onclick="clickIcon(1)">
             <span class="icon icon-folder"></span>
           </button>
-          <button class="btn btn-default">
+          <!-- <button class="btn btn-default">
             <span class="icon icon-cloud"></span>
           </button>
           <button class="btn btn-default">
@@ -41,7 +41,7 @@
           </button>
           <button class="btn btn-default">
             <span class="icon icon-shuffle"></span>
-          </button>
+          </button> -->
         </div>
         <!-- <button class="btn btn-default">
                 <span class="icon icon-home icon-text"></span>
@@ -161,14 +161,12 @@
     var email = document.getElementById("email").value;
     var password = document.getElementById("password").value;
     var pop = document.getElementById("pop").value;
-    var soundFlag = document.getElementById("soundFlag").checked;
     var emailFlag = document.getElementById("emailFlag").checked;
     var index = document.getElementById("model-select").selectedIndex;
     var texureIndex = document.getElementById("texure-select").selectedIndex;
     setObj.email = email;
     setObj.password = password;
     setObj.pop = pop;
-    setObj.soundFlag = soundFlag;
     setObj.emailFlag = emailFlag;
     setObj.model = document.getElementById("model-select").options[index].text;
     setObj.change_texure_way = document.getElementById("texure-select").options[texureIndex].value;
@@ -177,7 +175,6 @@
     db.set('email', email).write();
     db.set('password', password).write();
     db.set('pop', pop).write();
-    db.set('soundFlag', soundFlag).write();
     db.set('emailFlag', emailFlag).write();
     db.set('change_texure_way', setObj.change_texure_way).write();
     ipcRender.send('system-set-up', setObj);

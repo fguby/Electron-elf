@@ -123,7 +123,7 @@ function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow(windowobj);
   // 打开开发者工具
- // mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
   windowId = mainWindow.id;
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, '/index.html'))
@@ -211,15 +211,15 @@ function createWindow() {
       id: 4,
       label: '导入模型文件',
       click: function () {
-        dialog.showOpenDialog(null,{
-            title:"请选择文件",
-            properties:["openDirectory"],
-            message:"选择model.json文件所在文件夹"
-        },function(filePaths,securityScopedBookmarks){
-            if(filePaths != undefined){
-              var command = 'mv '+ filePaths + "/* " +path.join(__dirname,'/model');
-              spawn.exec(command);
-            }
+        dialog.showOpenDialog(null, {
+          title: "请选择文件",
+          properties: ["openDirectory"],
+          message: "选择model.json文件所在文件夹"
+        }, function (filePaths, securityScopedBookmarks) {
+          if (filePaths != undefined) {
+            var command = 'mv ' + filePaths + "/* " + path.join(__dirname, '/model');
+            spawn.exec(command);
+          }
         });
       }
     },
@@ -274,11 +274,13 @@ app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 
 //监听拖放删除
 ipcMain.on('deletefile', (event, filePath) => {
-      for(var i in filePath) {
-        //移动到废纸篓
-        var command = "mv " + filePath[i] + "  ~/.Trash/";
-        spawn.exec(command);
-      }
+  for (var i in filePath) {
+    //移动到废纸篓
+    // var command = "mv " + filePath[i] + "  ~/.Trash/";
+    // spawn.exec(command);
+    var flag = shell.moveItemToTrash(filePath[i]);
+    if(flag == true) shell.beep();
+  }
 });
 
 //监听渲染器进程发送过来的消息
@@ -289,7 +291,7 @@ ipcMain.on('system-set-up', (event, arg) => {
     return;
   } else {
     console.log(arg) // prints "ping"
-    if(arg.emailFlag) {
+    if (arg.emailFlag) {
       imap.end();
       //根据用户填写信息设置
       imap = new Imap({
@@ -304,7 +306,17 @@ ipcMain.on('system-set-up', (event, arg) => {
     }
     var obj = {};
     obj.label = arg.model;
-    changeModel(obj);
+    systemObj.change_texure_way = arg.change_texure_way;
+    systemObj.model = arg.model;
+    var submenus = contextMenu.items[0].submenu.items;
+    for (var i = 0; i < submenus.length; i++) {
+      if (submenus[i].label == arg.model) {
+        changeModel(submenus[i]);
+        //contextMenu.items[0].submenu.items[i].checked = false;
+        submenus[i].checked = true;
+        break;
+      }
+    }
   }
 });
 // In this file you can include the rest of your app's specific main process
