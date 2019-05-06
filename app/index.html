@@ -88,6 +88,8 @@
         SCALE: 1.1,
         //新增属性，是否播放音频 默认为true
         IS_PLAY_AUDIO: true,
+        THIS_TEXURE: 0,
+        FLAG:true,
         //新增属性，audio标签id值
         AUDIO_ID: "my_audio"
     };
@@ -104,6 +106,7 @@
         //从dbjson里读取系统设置信息
         var model = db.get("model").value();
         var menu = db.get("menu").value();
+        var thisTexure = db.get("now_texure").value();
         var models = [];
         for (var i in menu) {
             if (model == menu[i]) {
@@ -113,6 +116,7 @@
             }
         }
         LAppDefine.NAME = model;
+        LAppDefine.THIS_TEXURE = thisTexure;
         LAppDefine.MODELS = [models];
         LAppDefine.TEXURE_CHANGE_MODE = db.get("change_texure_way").value();
     }
@@ -154,8 +158,13 @@
     });
     //监听消息改变服装
     ipcRenderer.on('asynchronous-reply', function (event, arg) {
-        document.getElementById("texure").click();
+        clickTexureButton();
+        db.set("now_texure",LAppDefine.THIS_TEXURE).write();
     });
+
+    function clickTexureButton() {
+        document.getElementById("texure").click();
+    }
 
     //文件拖放删除
     function initDragIn() {
