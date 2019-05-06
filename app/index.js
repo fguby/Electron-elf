@@ -96,6 +96,12 @@ function initSystemSetUp() {
 // be closed automatically when the JavaScript object is garbage collected.
 
 function createWindow() {
+  //启动，初始化email
+  var dbPath = path.join(__dirname, '/db/db.json')
+  const low = require('lowdb');
+  const FileSync = require('lowdb/adapters/FileSync');
+  const adapter = new FileSync(dbPath);
+  const db = low(adapter);
   const {
     width,
     height
@@ -209,23 +215,15 @@ function createWindow() {
     },
     {
       id: 4,
-      label: '导入模型文件',
+      label: '设置模型仓库',
       click: function () {
         dialog.showOpenDialog(null, {
           title: "请选择文件",
           properties: ["openDirectory"],
-          message: "选择model.json文件所在文件夹"
+          message: "选择自定义的模型仓库位置"
         }, function (filePaths, securityScopedBookmarks) {
           if (filePaths != undefined) {
-            var arrs = filePaths[0].split("\/");
-            var filename = arrs[arrs.length - 1];
-            var command = 'mv ' + filePaths + " " + path.join(__dirname, '/model/user_models/');
-            spawn.exec(command, (error, stdout, stderr) => {
-              if (error) {
-                console.error(`exec error: ${error}`);
-                return;
-              }
-            });
+            db.set("user_model_path",filePaths).write();
           }
         });
       }
