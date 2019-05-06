@@ -3,7 +3,7 @@
   "password": "",
   "pop": "",
   "emailFlag": false,
-  "model": "NEW GAME！凉风青叶",
+  "model": "药水制作师小萝莉",
   "menu": [
     "干物妹小埋",
     "药水制作师小萝莉",
@@ -21,9 +21,11 @@
   "model_size": [
     0.8,
     1,
+    1,
     1.1,
-    1.2,
     1.2
   ],
-  "change_texure_way": "random"
+  "change_texure_way": "random",
+  "now_texure": 75,
+  "user_model_path": ""
 }
