@@ -155,14 +155,16 @@
     }
     select.innerHTML = html;
     //读取模型文件目录
-    var modelPath = path.join(__dirname, '/model/user_models');
+    var modelPath = db.get("user_model_path").value()[0];
+    console.log(modelPath)
     let files = fs.readdirSync(modelPath);
     var model_html = '<option value="">请选择</option>';
     files.forEach(function (item, index) {
       let fpath = path.join(modelPath, item);
       let stat = fs.statSync(fpath);
+      var mpath = modelPath + "/" + item;
       if (stat.isDirectory() == true) {
-        model_html += '<option value="' + item + '">' + item + '</option>';
+        model_html += '<option value="' + mpath + '">' + item + '</option>';
       }
     });
     var newSelect = document.getElementById("new—model-select");
@@ -191,13 +193,12 @@
     setObj.emailFlag = emailFlag;
     setObj.model = document.getElementById("model-select").options[index].text;
     setObj.change_texure_way = document.getElementById("texure-select").options[texureIndex].value;
-    debugger;
     if(newModelIndex != 0 && menuName != ''){
       var new_model = newModel.options[newModelIndex].value;
       // setObj.menu_name = menuName;
       var menus = db.get("menu").value();
       var modelPaths = db.get("model_path").value();
-      var newModelPath = "./model/user_models/" + new_model + "/model.json";
+      var newModelPath = new_model + "/model.json";
       var flag = true;
       //判断是否是新增模型
       for(var i in modelPaths) {
