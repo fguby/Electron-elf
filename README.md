@@ -115,5 +115,5 @@ npm install && npm start
 关于项目的重构如果有时间的话应该会进行的，也欢迎大家fork、提issues，watching这个项目。
 
 ### 愿意请我喝一罐肥宅快乐水吗？
-![avatar](app/img/wechat.jpg)
-![avatar](app/img/zhifubao.jpg)
+<img src="app/img/wechat.jpg" width="159" height="210"></img>
+<img src="app/img/zhifubao.jpg" width="159" height="210"></img>
