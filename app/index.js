@@ -47,6 +47,7 @@ var systemObj = {
   "soundFlag": true,
   "model": "",
   "menu": [],
+  "menu_text": "",
   "model_path": []
 };
 
@@ -75,6 +76,7 @@ function setSystemObj() {
   systemObj['emailFlag'] = db.get("emailFlag").value();
   systemObj['soundFlag'] = db.get("soundFlag").value();
   systemObj['menu'] = db.get("menu").value();
+  systemObj['menu_text'] = db.get("menu_text").value();
   systemObj['model_path'] = db.get("model_path").value();
   systemObj['change_texure_way'] = db.get("change_texure_way").value();
 }
@@ -184,6 +186,25 @@ function createWindow() {
       submenu: submenuArr
     },
     {
+      label: '菜单标题',
+      type: 'submenu',
+      submenu: [
+        {
+          label: '显示ip',
+          type: 'radio',
+          click: function() {
+              spawn.exec(path.join(__dirname,"/sh/ip.sh"),function(error,stdout,stderr){
+                if (error !== null) {
+                  console.log('exec error: ' + error);
+                }
+                title += stdout;
+                appTray.setTitle("\u001b[36m " + stdout);
+              });
+          }
+        }
+      ]
+    },
+    {
       type: 'separator'
     },
     {
@@ -248,9 +269,17 @@ function createWindow() {
   contextMenu = Menu.buildFromTemplate(trayMenuTemplate);
   //设置此托盘图标的悬停提示内容
   appTray.setToolTip('还快不点一下.');
+  //
+  // spawn.exec(systemObj.menu_text,function (error, stdout, stderr) {
+  //   if (error !== null) {
+  //     console.log('exec error: ' + error);
+  //   }
+  //   var command = stdout;
+  // });
+  var title = "\u001b[34m ";
   //设置此图标的上下文菜单
   appTray.setContextMenu(contextMenu);
-  appTray.setTitle("\u001b[34m 约定的梦幻岛")
+  appTray.setTitle(title + systemObj.menu_text);
   //开启邮箱提醒
   if (systemObj["emailFlag"]) initSystemSetUp();
 }
