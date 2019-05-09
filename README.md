@@ -106,3 +106,8 @@ npm install && npm start
 
 ### 意见以及BUG反馈
 一 [issues:speech_balloon:](https://github.com/fguby/Elf/issues "welcome")
+
+### 最后
+
+> 关于项目的重构如果有时间的话应该会进行的，也欢迎大家fork、提issues，watching这个项目。
+
