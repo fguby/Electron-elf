@@ -26,6 +26,9 @@
     1.2
   ],
   "change_texure_way": "random",
-  "now_texure": 75,
-  "user_model_path": ""
+  "now_texure": 44,
+  "menu_text": "约定的梦幻岛",
+  "user_model_path": [
+
+  ]
 }
