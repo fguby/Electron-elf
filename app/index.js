@@ -188,14 +188,6 @@ function createWindow() {
     },
     {
       id: 2,
-      label: 'website',
-      click: function () {
-        //shell打开页面
-        shell.openExternal('https://github.com/fguby');
-      }
-    },
-    {
-      id: 3,
       label: '系统设置',
       click: function () {
         //let displays = electron.screen.getCursorScreenPoint()
@@ -214,7 +206,7 @@ function createWindow() {
       }
     },
     {
-      id: 4,
+      id: 3,
       label: '设置模型仓库',
       click: function () {
         dialog.showOpenDialog(null, {
@@ -232,9 +224,16 @@ function createWindow() {
       type: 'separator'
     },
     {
-      label: '赞助一下',
+      label: 'website',
+      click: function () {
+        //shell打开页面
+        shell.openExternal('https://github.com/fguby');
+      }
+    },
+    {
+      label: '赞助',
       click: function (menuItem, browserWindow, event) {
-        wechatpay(appTray.getBounds(), browserWindow)
+        wechatpay(appTray.getBounds(),browserWindow);
       }
     },
     {
