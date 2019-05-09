@@ -51,14 +51,16 @@ npm install && npm start
 
 #### 一个大概的系统设置界面？
 ![avatar](app/img/system.jpg)
-#### 快捷键换装
-![avatar](app/img/loli.gif)
+#### 快捷键随机换装
+![avatar](app/img/huanzhuang.gif)
 #### 邮件收取以及mac通知栏通知
 ![avatar](app/img/email.gif)
 #### 回复RM命令删除邮件
 ![avatar](app/img/email111.gif)
 #### 拖动文件到模型区域可删除文件
 ![avatar](app/img/lajitong1.gif)
+#### 菜单标题更换为ip
+![avatar](app/img/ip.gif)
 
 ---
 ### 上传自定义模型步骤
@@ -80,7 +82,7 @@ npm install && npm start
 - [x] 换装功能
 - [x] mac通知栏开发
 - [x] 上传自定义模型
-- [ ] 消息模块完善
+- [ ] 菜单标题栏的开发(显示ip，天气等)
 - [ ] 快捷键自定义设置
 - [x] 废纸篓功能
 - [ ] 自定义邮件附件的存储位置
