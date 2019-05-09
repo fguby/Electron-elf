@@ -63,7 +63,7 @@ npm install && npm start
 ---
 ### 上传自定义模型步骤
 
-- （1）点击菜单栏—>"导入模型文件"
+- （1）点击菜单栏—>"设置模型仓库"
 (选中要上传的文件夹，将模型的json文件统一修改为model.json这个名字，确保系统能读取到。)
 
 ![avatar](app/img/shangchuan1.jpg)
