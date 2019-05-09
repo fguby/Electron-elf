@@ -10,6 +10,9 @@
 
 > 使用Electron、live2D开发的一款二次元桌面应用。
 
+### φ(≧ω≦*)♪
+如果你喜欢，请给我一颗⭐️✨ 
+
 ---
 
 ### 相关技术
@@ -109,7 +112,8 @@ npm install && npm start
 ### 意见以及BUG反馈
 一 [issues:speech_balloon:](https://github.com/fguby/Elf/issues "welcome")
 
-### 最后
+关于项目的重构如果有时间的话应该会进行的，也欢迎大家fork、提issues，watching这个项目。
 
-> 关于项目的重构如果有时间的话应该会进行的，也欢迎大家fork、提issues，watching这个项目。
-
+### 愿意请我喝一罐肥宅快乐水吗？
+![avatar](app/img/wechat.jpg)
+![avatar](app/img/zhifubao.jpg)
