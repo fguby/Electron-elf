@@ -4,6 +4,7 @@
 <a href="https://github.com/fguby/Elf/releases"><img src="https://img.shields.io/github/release/fguby/Elf.svg?style=flat-square" alt="Current Release"></a>
 [![](https://travis-ci.com/fguby/Elf.svg?branch=master)](https://travis-ci.org/fguby/Elf)
 ![Travis](https://img.shields.io/badge/live2D-2.1.0-ff69b4.svg?labelColor=blueviolet)
+[![Gitter](https://badges.gitter.im/Electron-elf/community.svg)](https://gitter.im/Electron-elf/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 [English Document](https://github.com/fguby/Elf/blob/master/README-en.md "elf")
 
