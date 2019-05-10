@@ -130,7 +130,7 @@ For the time being, only two shortcut keys are supported. Please follow up later
 
 Recently I am learning go, about the reconstruction of the project, if there is time, it should be carried out, and welcome everyone to fork, mention issues, watching this project, my personal email (fgubyhhh@163.com)
 
-### Would you like me to drink a can of coffee?
+### Would you like to have a cup of coffee with me?
 
 <img src="app/img/wechat.jpg" width="250" height="310">
 <img src="app/img/zhifubao.jpg" width="250" height="310">
