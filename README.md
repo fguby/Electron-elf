@@ -46,6 +46,8 @@ npm install && npm start
 - [x] 窗口拖放
 - [x] 消息弹框（已暂时删除）
 - [x] 换装功能
+- [x] 自定义菜单标题文字
+- [x] 一些有趣的小功能
 - [x] mac通知栏开发(简易的删除邮件方式？)
 - [x] 本地上传自定义模型
 - [x] 文本邮件收取以及通知
@@ -80,13 +82,34 @@ npm install && npm start
 
 - （3）重启应用。
 
+---
+
+### 一些有意思的小功能展示(即将要做的)
+
+#### json字符串的格式化（使用快捷键command + T试试）
+![avatar](app/img/json.gif)
+
+脚本来自于一 [JsonUtils](https://github.com/cnfn/BitBarPlugins/tree/master/JsonUtils "jsonutil")
+
+环境依赖：jq
+
+可以使用以下命令安装
+
+```
+brew install jq
+```
+
+或者，
+
+[去看看官方的示例？](https://stedolan.github.io/jq/download/ "jq")
+
 
 ### TODO
 - [x] 邮箱监控
 - [x] 换装功能
 - [x] mac通知栏开发
 - [x] 上传自定义模型
-- [ ] 菜单标题栏的开发(显示ip，天气等)
+- [ ] 一些有趣小功能的开发(显示ip，天气等)
 - [ ] 快捷键自定义设置
 - [x] 废纸篓功能
 - [ ] 自定义邮件附件的存储位置
@@ -107,8 +130,10 @@ npm install && npm start
 ---|---
 切换模型 | command + Y
 切换衣服 | command + J
+格式化json字符串 | command + T
 
-暂时只支持两个快捷键，后续请期待。
+～～暂时只支持两个快捷键，后续请期待。～～
+新增第三个快捷键(请注意，这个功能的使用需要依赖一些额外的东西，详情请往上翻。)
 
 ### 意见以及BUG反馈
 一 [issues:speech_balloon:](https://github.com/fguby/Elf/issues "welcome")
