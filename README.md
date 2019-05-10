@@ -98,6 +98,7 @@ brew install jq
 
 [去看看官方的示例？](https://stedolan.github.io/jq/download/ "jq")
 
+---
 
 ### TODO
 - [x] 邮箱监控
@@ -120,6 +121,7 @@ brew install jq
 
 ---
 
+### 快捷键说明
 
 功能 | 快捷键
 ---|---
@@ -131,11 +133,14 @@ brew install jq
 
 新增第三个快捷键(请注意，这个功能的使用需要依赖一些额外的东西，详情请往上翻。)
 
+---
+
 ### 意见以及BUG反馈
 一 [issues:speech_balloon:](https://github.com/fguby/Elf/issues "welcome")
 
 最近正在学go，关于项目的重构如果有时间的话应该会进行的，也欢迎大家fork、提issues，watching这个项目，我个人邮箱(fgubyhhh@163.com)
 
+---
 ### ~~想请我喝一罐肥宅快乐水吗？~~
 <img src="app/img/wechat.jpg" width="250" height="310"></img>
 <img src="app/img/zhifubao.jpg" width="250" height="310"></img>
