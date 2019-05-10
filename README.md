@@ -114,6 +114,6 @@ npm install && npm start
 
 最近正在学go，关于项目的重构如果有时间的话应该会进行的，也欢迎大家fork、提issues，watching这个项目，我个人email(fgubyhhh@163.com)
 
-### 愿意请我喝一罐肥宅快乐水吗？
+### 想请我喝一罐肥宅快乐水吗？
 <img src="app/img/wechat.jpg" width="250" height="310"></img>
 <img src="app/img/zhifubao.jpg" width="250" height="310"></img>
