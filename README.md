@@ -96,7 +96,7 @@ npm install && npm start
 
 > 如果喜欢的话，恳请给予一个star，持续watch这个项目最好啦。
 
-一 [这里是最新的测试版dmg文件:alien:](https://github.com/fguby/Elf/releases/tag/v0.1.1/ "Elf")
+一 [这里是最新的测试版dmg文件:alien:](https://github.com/fguby/Elf/releases/tag/v1.0.0/ "Elf")
 
 
 ---
