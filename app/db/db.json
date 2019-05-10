@@ -3,7 +3,7 @@
   "password": "",
   "pop": "",
   "emailFlag": false,
-  "model": "药水制作师小萝莉",
+  "model": "干物妹小埋",
   "menu": [
     "干物妹小埋",
     "药水制作师小萝莉",
@@ -21,14 +21,13 @@
   "model_size": [
     0.8,
     1,
-    1,
+    0.7,
     1.1,
     1.2
   ],
-  "change_texure_way": "random",
+  "change_texure_way": "sequence",
   "now_texure": 44,
-  "menu_text": "约定的梦幻岛",
-  "user_model_path": [
-
-  ]
+  "menu_text": "genius",
+  "website": "https://github.com/fguby",
+  "user_model_path": []
 }
