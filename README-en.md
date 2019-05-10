@@ -19,11 +19,11 @@ If you like, please give me a ⭐️✨
 
 ### Related technology
 
-一 [构建跨平台的应用：Electron](https://electronjs.org/ "electron")
+一 [Electron](https://electronjs.org/ "electron")
 
-一 [二次元技术-live2D](https://www.live2d.com/ja/ "live2D")
+一 [live2D](https://www.live2d.com/ja/ "live2D")
 
-一 [live2D Web插件](https://github.com/fguby/live2D "live2D")
+一 [live2D Web](https://github.com/fguby/live2D "live2D")
 
 ### Quick start
 
@@ -85,13 +85,13 @@ npm install && npm start
 
 ---
 
-### 上传自定义模型步骤
+### Set up custom model steps
 
-- （1）点击菜单栏—>"设置模型仓库"(选中要上传的文件夹，将模型的json文件统一修改为model.json这个名字，确保系统能读取到。)
+- (1) Click on the menu bar -> "设置模型仓库" (check the folder to be uploaded, and change the json file of the model to the name model.json to ensure that the system can read it.)
 
 ![avatar](app/img/shangchuan1.jpg)
 
-- （2）点击‘系统设置’，配置新增模型的菜单栏文字。
+- (2) Click '系统设置' to configure the menu bar text for the new model.
 
 ![avatar](app/img/shangchuan2.jpg)
 
@@ -102,25 +102,25 @@ npm install && npm start
 - [x] Mailbox monitoring
 - [x] Dressup function
 - [x] mac notification bar development
-- [x] 上传自定义模型
-- [ ] 菜单标题栏的开发(显示ip，天气等)
+- [x] Set up a custom model
+- [ ] Development of menu title bar (show ip, weather......)
 - [ ] Shortcut Custom Settings
 - [x] Trash function
 - [ ] Customize the storage location of email attachments
 - [x] mac notification bar to add a reply line, you can delete the mail directly
 - [ ] Custom configuration page for each module (initial startup model settings, clothes settings...)
-- [ ] 等等等......
+- [ ] .....
 
 > If you like, please give a star, it is best to keep watching this project.
 
-一 [这里是最新的测试版dmg文件:alien:](https://github.com/fguby/Elf/releases/tag/v1.0.0/ "Elf")
+一 [Here is the latest beta version of the dmg file:alien:](https://github.com/fguby/Elf/releases/tag/v1.0.0/ "Elf")
 
 ---
 
-功能 | hot key
+Function | hot key
 --- | ---
 Switching model | command + Y
-切换衣服 | command + J
+Dress up | command + Y
 
 For the time being, only two shortcut keys are supported. Please follow up later.
 
@@ -130,7 +130,7 @@ For the time being, only two shortcut keys are supported. Please follow up later
 
 Recently I am learning go, about the reconstruction of the project, if there is time, it should be carried out, and welcome everyone to fork, mention issues, watching this project, my personal email (fgubyhhh@163.com)
 
-### 愿意请我喝一罐肥宅快乐水吗？
+### Would you like me to drink a can of coffee?
 
 <img src="app/img/wechat.jpg" width="250" height="310">
 <img src="app/img/zhifubao.jpg" width="250" height="310">
