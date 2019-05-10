@@ -48,6 +48,7 @@ var systemObj = {
   "model": "",
   "menu": [],
   "menu_text": "",
+  "website": "",
   "model_path": []
 };
 
@@ -78,6 +79,7 @@ function setSystemObj() {
   systemObj['menu'] = db.get("menu").value();
   systemObj['menu_text'] = db.get("menu_text").value();
   systemObj['model_path'] = db.get("model_path").value();
+  systemObj['website'] = db.get("website").value();
   systemObj['change_texure_way'] = db.get("change_texure_way").value();
 }
 //初始化系统设置
@@ -164,6 +166,16 @@ function createWindow() {
     window.webContents.send('asynchronous-reply', 'ping')
   });
 
+  //快捷键json数据格式化
+  globalShortcut.register('CommandOrControl+T', () => {
+      spawn.exec(path.join(__dirname,"/sh/JsonUtils.sh"),function(error,stdout,stderr){
+        if (error !== null) {
+          console.log('exec error: ' + error);
+          return
+        }
+      });
+  });
+
   //生成子菜单
   var submenuArr = [];
   for (var i in systemObj["menu"]) {
@@ -186,26 +198,39 @@ function createWindow() {
       submenu: submenuArr
     },
     {
-      label: '菜单标题',
+      type: 'separator'
+    },
+    {
+      label: '小功能',
       type: 'submenu',
       submenu: [
         {
           label: '显示ip',
           type: 'radio',
           click: function() {
-              spawn.exec(path.join(__dirname,"/sh/ip.sh"),function(error,stdout,stderr){
+              spawn.execFile(path.join(__dirname,"/sh/ip.sh"),function(error,stdout,stderr){
                 if (error !== null) {
                   console.log('exec error: ' + error);
+                  return
                 }
                 title += stdout;
                 appTray.setTitle("\u001b[36m " + stdout);
               });
           }
+        },
+        {
+          label: 'json格式化',
+          type: 'radio',
+          click: function() {
+            spawn.exec(path.join(__dirname,"/sh/JsonUtils.sh"),function(error,stdout,stderr){
+              if (error !== null) {
+                console.log('exec error: ' + error);
+                return
+              }
+            });
+          }
         }
       ]
-    },
-    {
-      type: 'separator'
     },
     {
       id: 2,
@@ -248,7 +273,7 @@ function createWindow() {
       label: 'website',
       click: function () {
         //shell打开页面
-        shell.openExternal('https://github.com/fguby');
+        shell.openExternal(systemObj.website);
       }
     },
     {
@@ -341,6 +366,9 @@ ipcMain.on('system-set-up', (event, arg) => {
     obj.label = arg.model;
     systemObj.change_texure_way = arg.change_texure_way;
     systemObj.model = arg.model;
+    systemObj.website = arg.website;
+    //设置标题
+    appTray.setTitle("\u001b[34m " + arg.menutext);
     var submenus = contextMenu.items[0].submenu.items;
     for (var i = 0; i < submenus.length; i++) {
       if (submenus[i].label == arg.model) {
@@ -482,7 +510,6 @@ function imapReady() {
                 }
               });
             }
-            //imap.end();
           });
         });
       });
