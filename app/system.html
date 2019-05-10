@@ -91,7 +91,7 @@
           </select>
         </div>
         <div class="form-group">
-          <label>定义菜单</label>
+          <label>定义菜单标题</label>
           <input id="menutext" type="email" class="form-control" placeholder="输入自定义menu">
         </div>
         <p>
@@ -111,6 +111,10 @@
         <div class="form-group">
           <label>菜单名称</label>
           <input id="menu" type="email" class="form-control" placeholder="设置菜单">
+        </div>
+        <div class="form-group">
+          <label>website</label>
+          <input id="website" type="email" class="form-control" placeholder="设置website">
         </div>
       </div>
     </div>
@@ -144,9 +148,13 @@
     var menus = db.get('menu').value();
     var model = db.get('model').value();
     var change_texure_way = db.get('change_texure_way').value();
+    var menu_text = db.get('menu_text').value();
+    var website = db.get('website').value();
     document.getElementById("email").value = email;
     document.getElementById("password").value = password;
     document.getElementById("pop").value = pop;
+    document.getElementById("menutext").value = menu_text;
+    document.getElementById("website").value = website;
     var select = document.getElementById("model-select");
     var select_2 = document.getElementById("texure-select");
     var html = "";
@@ -191,10 +199,14 @@
     var newModel = document.getElementById("new—model-select");
     var newModelIndex = newModel.selectedIndex;
     var menuName = document.getElementById("menu").value;
+    var menutext = document.getElementById("menutext").value;
+    var website = document.getElementById("website").value;
     setObj.email = email;
     setObj.password = password;
     setObj.pop = pop;
     setObj.emailFlag = emailFlag;
+    setObj.menutext = menutext;
+    setObj.website = website;
     setObj.model = document.getElementById("model-select").options[index].text;
     setObj.change_texure_way = document.getElementById("texure-select").options[texureIndex].value;
     if(newModelIndex != 0 && menuName != ''){
@@ -230,6 +242,8 @@
     db.set('pop', pop).write();
     db.set('emailFlag', emailFlag).write();
     db.set('change_texure_way', setObj.change_texure_way).write();
+    db.set('menu_text',menutext).write();
+    db.set('website',website).write();
     ipcRender.send('system-set-up', setObj);
   }
 
