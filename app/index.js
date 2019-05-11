@@ -115,8 +115,6 @@ function createWindow() {
     y: height - 500,
     width: 300,
     height: 500,
-    // width: 800,
-    // height: 1000,
     maximizable: false,
     minimizable: false,
     resizable: false,
@@ -168,7 +166,7 @@ function createWindow() {
 
   //快捷键json数据格式化
   globalShortcut.register('CommandOrControl+T', () => {
-      spawn.exec(path.join(__dirname,"/sh/JsonUtils.sh"),function(error,stdout,stderr){
+      spawn.execFile(path.join(__dirname,"/sh/JsonUtils.sh"),function(error,stdout,stderr){
         if (error !== null) {
           console.log('exec error: ' + error);
           return
@@ -206,7 +204,6 @@ function createWindow() {
       submenu: [
         {
           label: '显示ip',
-          type: 'radio',
           click: function() {
               spawn.execFile(path.join(__dirname,"/sh/ip.sh"),function(error,stdout,stderr){
                 if (error !== null) {
@@ -220,9 +217,8 @@ function createWindow() {
         },
         {
           label: 'json格式化',
-          type: 'radio',
           click: function() {
-            spawn.exec(path.join(__dirname,"/sh/JsonUtils.sh"),function(error,stdout,stderr){
+            spawn.execFile(path.join(__dirname,"/sh/JsonUtils.sh"),function(error,stdout,stderr){
               if (error !== null) {
                 console.log('exec error: ' + error);
                 return
@@ -367,6 +363,9 @@ ipcMain.on('system-set-up', (event, arg) => {
     systemObj.change_texure_way = arg.change_texure_way;
     systemObj.model = arg.model;
     systemObj.website = arg.website;
+    //更正声音设置
+    var mainWindow = BrowserWindow.fromId(windowId);
+    mainWindow.webContents.send('set-up-sound', arg.sound)
     //设置标题
     appTray.setTitle("\u001b[34m " + arg.menutext);
     var submenus = contextMenu.items[0].submenu.items;
