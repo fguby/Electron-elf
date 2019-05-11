@@ -147,7 +147,7 @@ Switching model | command + Y
 Dressup function | command + J
 Format json string | command + T
 
-~~ Only two shortcut keys are supported at the moment, please follow up later. ~~
+~~Only two shortcut keys are supported at the moment, please follow up later. ~~
 
 Added a third shortcut (please note that the use of this feature requires some extra stuff, please go up.)
 
