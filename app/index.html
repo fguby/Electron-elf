@@ -107,6 +107,7 @@
         var model = db.get("model").value();
         var menu = db.get("menu").value();
         var thisTexure = db.get("now_texure").value();
+        var sound = db.get("sound").value();
         var models = [];
         for (var i in menu) {
             if (model == menu[i]) {
@@ -119,6 +120,11 @@
         LAppDefine.THIS_TEXURE = thisTexure;
         LAppDefine.MODELS = [models];
         LAppDefine.TEXURE_CHANGE_MODE = db.get("change_texure_way").value();
+        if(sound){
+            LAppDefine.AUDIO_ID = "my_audio";
+        }else{
+            LAppDefine.AUDIO_ID = "";
+        }
     }
     setModelPath();
 </script>
@@ -160,6 +166,14 @@
     ipcRenderer.on('asynchronous-reply', function (event, arg) {
         clickTexureButton();
         db.set("now_texure",LAppDefine.THIS_TEXURE).write();
+    });
+    //监听模型声音设置的改变
+    ipcRenderer.on('set-up-sound',function(event,arg) {
+        if(arg){
+            LAppDefine.AUDIO_ID = "my_audio";
+        }else{
+            LAppDefine.AUDIO_ID = "";
+        }
     });
 
     function clickTexureButton() {
