@@ -27,7 +27,8 @@
   ],
   "change_texure_way": "sequence",
   "now_texure": 44,
-  "menu_text": "genius",
+  "menu_text": "约定的梦幻岛",
   "website": "https://github.com/fguby",
+  "sound": true,
   "user_model_path": []
 }
