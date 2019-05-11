@@ -47,9 +47,9 @@
                 <span class="icon icon-home icon-text"></span>
                 Filters
               </button> -->
-        <!-- <!-- <button class="btn btn-default btn-dropdown pull-right">
-                <span class="icon icon-megaphone"></span>
-              </button> -->
+       <!-- <button class="btn btn-default btn-dropdown pull-right">
+            <span class="icon icon-sound"></span>
+        </button> -->
       </div>
     </header>
 
@@ -75,6 +75,9 @@
               是否开启邮件提醒
             </label>
           </div>
+          <p>
+            <span style="color:teal;">注：开启邮箱提醒需要用户手动去所属的邮箱客户端里设置pop服务开启。</span>
+          </p>
         </form>
       </div>
       <div class="padded-more padded-view">
@@ -94,9 +97,12 @@
           <label>定义菜单标题</label>
           <input id="menutext" type="email" class="form-control" placeholder="输入自定义menu">
         </div>
-        <p>
-          <span style="color:teal;">注：开启邮箱提醒需要用户手动去所属的邮箱客户端里设置pop服务开启。</span>
-        </p>
+        <div class="checkbox">
+          <label>
+            <input id="sound" type="checkbox">
+            是否开启音效
+          </label>
+        </div>
         <!-- <p>
                 <a>如果你想支持一下我</a>
             </p> -->
@@ -123,7 +129,7 @@
         <button class="btn btn-default" onclick="cancel()">
           取消
         </button>
-        <button onclick="setUpSystem()" class="btn btn-primary pull-right">
+        <button onclick="setUpSystem()" class="btn btn-positive pull-right">
           确定
         </button>
       </div>
@@ -150,6 +156,10 @@
     var change_texure_way = db.get('change_texure_way').value();
     var menu_text = db.get('menu_text').value();
     var website = db.get('website').value();
+    var sound = db.get('sound').value();
+    if (sound) {
+      document.getElementById("sound").checked = true;
+    }
     document.getElementById("email").value = email;
     document.getElementById("password").value = password;
     document.getElementById("pop").value = pop;
@@ -201,12 +211,14 @@
     var menuName = document.getElementById("menu").value;
     var menutext = document.getElementById("menutext").value;
     var website = document.getElementById("website").value;
+    var sound = document.getElementById("sound").checked;
     setObj.email = email;
     setObj.password = password;
     setObj.pop = pop;
     setObj.emailFlag = emailFlag;
     setObj.menutext = menutext;
     setObj.website = website;
+    setObj.sound = sound;
     setObj.model = document.getElementById("model-select").options[index].text;
     setObj.change_texure_way = document.getElementById("texure-select").options[texureIndex].value;
     if(newModelIndex != 0 && menuName != ''){
@@ -244,6 +256,7 @@
     db.set('change_texure_way', setObj.change_texure_way).write();
     db.set('menu_text',menutext).write();
     db.set('website',website).write();
+    db.set('sound',sound).write();
     ipcRender.send('system-set-up', setObj);
   }
 
