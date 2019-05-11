@@ -28,11 +28,11 @@
 
 1.下载示例代码
 ```
-git clone https://github.com/fguby/Elf.git
+git clone https://github.com/fguby/Electron-elf.git
 ```
 2.进入目录
 ```
-cd Elf
+cd Electron-elf
 ```
 3.安装依赖并运行
 
