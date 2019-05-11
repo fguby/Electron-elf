@@ -2,7 +2,7 @@
 
 ![Travis](https://img.shields.io/badge/Electron-^4.1.4-important.svg)
 <a href="https://github.com/fguby/Elf/releases"><img src="https://img.shields.io/github/release/fguby/Elf.svg?style=flat-square" alt="Current Release"></a>
-[![](https://travis-ci.com/fguby/Elf.svg?branch=master)](https://travis-ci.org/fguby/Elf)
+[![](https://travis-ci.org/fguby/Electron-elf.svg?branch=master)](https://travis-ci.org/fguby/Electron-elf)
 ![Travis](https://img.shields.io/badge/live2D-2.1.0-ff69b4.svg?labelColor=blueviolet)
 [![Gitter](https://badges.gitter.im/Electron-elf/community.svg)](https://gitter.im/Electron-elf/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
@@ -159,7 +159,7 @@ Added a third shortcut (please note that the use of this feature requires some e
 
 my personal email (fgubyhhh@163.com)
 
-### ~~ Would you like to have a cup of coffee with me? ~~
+### ~~Would you like to have a cup of coffee with me?~~
 
 <img src="app/img/wechat.jpg" width="250" height="310">
 <img src="app/img/zhifubao.jpg" width="250" height="310">
