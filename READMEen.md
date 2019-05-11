@@ -20,11 +20,11 @@ If you like, please give me a ⭐️✨
 
 ### Related technology
 
-一 [构建跨平台的应用：Electron](https://electronjs.org/ "electron")
+一 [Electron](https://electronjs.org/ "electron")
 
-一 [二次元技术-live2D](https://www.live2d.com/ja/ "live2D")
+一 [live2D](https://www.live2d.com/ja/ "live2D")
 
-一 [live2D Web插件](https://github.com/fguby/live2D "live2D")
+一 [live2D Web Add-on](https://github.com/fguby/live2D "live2D")
 
 ### Quick start
 
@@ -89,10 +89,9 @@ Npm install && npm start
 
 ### Set up local model repository steps
 
-- 1️⃣设置模型仓库"
-    (选中要上传的文件夹，将模型的json文件统一修改为model.json这个名字，确保系统能读取到。)
+- 1️⃣Set the model repository (Select the folder to be uploaded, and change the json file of the model to the name model.json to ensure that the system can read it.)
 
-- 2️⃣点击‘系统设置’，配置新增模型的菜单栏文字。
+- 2️⃣ Click '系统设置' to configure the menu bar text for the new model.
 
 - 3️⃣ Restart the application.
 
@@ -104,7 +103,7 @@ Npm install && npm start
 
 ![avatar](app/img/json.gif)
 
-脚本来自于一 [JsonUtils](https://github.com/cnfn/BitBarPlugins/tree/master/JsonUtils "jsonutil")
+The script comes from 一 [JsonUtils](https://github.com/cnfn/BitBarPlugins/tree/master/JsonUtils "jsonutil")
 
 Environmental dependence: jq
 
@@ -132,20 +131,20 @@ or,
 - [ ] Customize the storage location of email attachments
 - [x] mac notification bar to add a reply line, you can delete the mail directly
 - [ ] Custom configuration page for each module (initial startup model settings, clothes settings...)
-- [ ] 等等等......
+- [ ] ......
 
 > If you like, please give a star, it is best to keep watching this project.
 
-一 [这里是最新的测试版dmg文件:alien:](https://github.com/fguby/Elf/releases/tag/v1.0.1/ "Elf")
+一 [Here is the latest beta version of the dmg file:alien:](https://github.com/fguby/Elf/releases/tag/v1.0.1/ "Elf")
 
 ---
 
 ### Shortcut description
 
-功能 | hot key
+Features | hot key
 --- | ---
 Switching model | command + Y
-切换衣服 | command + J
+Dressup function | command + J
 Format json string | command + T
 
 ~~ Only two shortcut keys are supported at the moment, please follow up later. ~~
@@ -158,9 +157,9 @@ Added a third shortcut (please note that the use of this feature requires some e
 
 一 [issues:speech_balloon:](https://github.com/fguby/Elf/issues "welcome")
 
-最近正在学go，关于项目的重构如果有时间的话应该会进行的，也欢迎大家fork、提issues，watching这个项目，我个人邮箱(fgubyhhh@163.com)
+my personal email (fgubyhhh@163.com)
 
-### ~~想请我喝一罐肥宅快乐水吗？~~
+### ~~ Would you like to have a cup of coffee with me? ~~
 
 <img src="app/img/wechat.jpg" width="250" height="310">
 <img src="app/img/zhifubao.jpg" width="250" height="310">
