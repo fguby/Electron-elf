@@ -5,7 +5,7 @@
 ![Travis](https://img.shields.io/badge/live2D-2.1.0-ff69b4.svg?labelColor=blueviolet)
 [![Gitter](https://badges.gitter.im/Electron-elf/community.svg)](https://gitter.im/Electron-elf/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-[English Document](https://github.com/fguby/Elf/blob/master/README-en.md "elf")
+[English Document](https://github.com/fguby/Elf/blob/master/READMEen.md "elf")
 
 ![avatar](app/img/yanshi1.gif)
 
