@@ -225,6 +225,17 @@ function createWindow() {
               }
             });
           }
+        },
+        {
+          label: '锁定屏幕',
+          click: function() {
+            spawn.execFile(path.join(__dirname,"/sh/lock.sh"),["lock"],function(error,stdout,stderr){
+              if (error !== null) {
+                console.log('exec error: ' + error);
+                return
+              }
+            });
+          }
         }
       ]
     },
@@ -243,7 +254,7 @@ function createWindow() {
         });
         systemWindow.loadFile(path.join(__dirname, '/system.html'));
         //打开开发者工具
-        //systemWindow.webContents.openDevTools();
+        systemWindow.webContents.openDevTools();
         systemWindowId = systemWindow.id;
       }
     },
