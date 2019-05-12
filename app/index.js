@@ -254,7 +254,7 @@ function createWindow() {
         });
         systemWindow.loadFile(path.join(__dirname, '/system.html'));
         //打开开发者工具
-        systemWindow.webContents.openDevTools();
+        //systemWindow.webContents.openDevTools();
         systemWindowId = systemWindow.id;
       }
     },
