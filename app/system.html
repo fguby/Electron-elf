@@ -178,17 +178,18 @@
     select.innerHTML = html;
     //读取模型文件目录
     var modelPath = db.get("user_model_path").value()[0];
-    console.log(modelPath)
-    let files = fs.readdirSync(modelPath);
-    var model_html = '<option value="">请选择</option>';
-    files.forEach(function (item, index) {
-      let fpath = path.join(modelPath, item);
-      let stat = fs.statSync(fpath);
-      var mpath = modelPath + "/" + item;
-      if (stat.isDirectory() == true) {
-        model_html += '<option value="' + mpath + '">' + item + '</option>';
-      }
-    });
+    if(modelPath != undefined) {
+      let files = fs.readdirSync(modelPath);
+      var model_html = '<option value="">请选择</option>';
+      files.forEach(function (item, index) {
+        let fpath = path.join(modelPath, item);
+        let stat = fs.statSync(fpath);
+        var mpath = modelPath + "/" + item;
+        if (stat.isDirectory() == true) {
+          model_html += '<option value="' + mpath + '">' + item + '</option>';
+        }
+      });
+    }
     var newSelect = document.getElementById("new—model-select");
     newSelect.innerHTML = model_html;
     for (var n in select_2) {
