@@ -157,7 +157,7 @@ Added a third shortcut (please note that the use of this feature requires some e
 
 一 [issues:speech_balloon:](https://github.com/fguby/Elf/issues "welcome")
 
-my personal email (fgubyhhh@163.com)
+my personal email (fguby1995@gmail.com)
 
 ### ~~Would you like to have a cup of coffee with me?~~
 
